@@ -1,0 +1,1327 @@
+LocationType,Location,TimeFrame,DataFormat,Data
+Nation,United States,2000,Number,544303
+Nation,United States,2001,Number,544614
+Nation,United States,2002,Number,532717
+Nation,United States,2003,Number,519482
+Nation,United States,2004,Number,507419
+Nation,United States,2005,Number,511318
+Nation,United States,2006,Number,510885
+Nation,United States,2007,Number,486619
+Nation,United States,2013,Number,402172
+Nation,United States,2018,Number,437283
+Nation,United States,2008,Number,459828
+Nation,United States,2009,Number,423773
+Nation,United States,2015,Number,427901
+Nation,United States,2020,Number,407493
+Nation,United States,2011,Number,397885
+Nation,United States,2012,Number,397091
+Nation,United States,2014,Number,415129
+Nation,United States,2016,Number,437465
+Nation,United States,2017,Number,442733
+Nation,United States,2022,Number,368341
+Nation,United States,2024,Number,345059
+Nation,United States,2019,Number,426749
+Nation,United States,2021,Number,391641
+Nation,United States,2023,Number,360531
+Nation,United States,2010,Number,408425
+State,Alabama,2010,Number,5350
+State,Alabama,2023,Number,5828
+State,Alabama,2021,Number,5341
+State,Alabama,2019,Number,5783
+State,Alabama,2024,Number,5797
+State,Alabama,2022,Number,5260
+State,Alabama,2017,Number,5631
+State,Alabama,2016,Number,5053
+State,Alabama,2014,Number,4556
+State,Alabama,2012,Number,4561
+State,Alabama,2011,Number,5253
+State,Alabama,2020,Number,5573
+State,Alabama,2015,Number,4745
+State,Alabama,2009,Number,6894
+State,Alabama,2008,Number,6876
+State,Alabama,2018,Number,5930
+State,Alabama,2013,Number,4532
+State,Alabama,2007,Number,7097
+State,Alabama,2005,Number,6913
+State,Alabama,2006,Number,7157
+State,Alabama,2003,Number,6079
+State,Alabama,2004,Number,5934
+State,Alabama,2001,Number,5859
+State,Alabama,2002,Number,5883
+State,Alabama,2000,Number,5621
+State,Alaska,2000,Number,2193
+State,Alaska,2001,Number,1993
+State,Alaska,2002,Number,2072
+State,Alaska,2003,Number,2040
+State,Alaska,2004,Number,1830
+State,Alaska,2005,Number,1790
+State,Alaska,2006,Number,2017
+State,Alaska,2007,Number,2126
+State,Alaska,2013,Number,1982
+State,Alaska,2018,Number,2792
+State,Alaska,2008,Number,2168
+State,Alaska,2009,Number,2166
+State,Alaska,2015,Number,2653
+State,Alaska,2020,Number,2860
+State,Alaska,2011,Number,1871
+State,Alaska,2012,Number,1889
+State,Alaska,2014,Number,2190
+State,Alaska,2016,Number,2820
+State,Alaska,2017,Number,2766
+State,Alaska,2022,Number,2690
+State,Alaska,2024,Number,2522
+State,Alaska,2019,Number,2879
+State,Alaska,2021,Number,2828
+State,Alaska,2023,Number,2671
+State,Alaska,2010,Number,1801
+State,Arizona,2010,Number,9930
+State,Arizona,2023,Number,10573
+State,Arizona,2021,Number,14890
+State,Arizona,2019,Number,13330
+State,Arizona,2024,Number,9092
+State,Arizona,2022,Number,12202
+State,Arizona,2017,Number,15031
+State,Arizona,2016,Number,17118
+State,Arizona,2014,Number,16246
+State,Arizona,2012,Number,13461
+State,Arizona,2011,Number,10883
+State,Arizona,2020,Number,13599
+State,Arizona,2015,Number,17738
+State,Arizona,2009,Number,10175
+State,Arizona,2008,Number,10425
+State,Arizona,2018,Number,13360
+State,Arizona,2013,Number,14399
+State,Arizona,2007,Number,9077
+State,Arizona,2006,Number,9731
+State,Arizona,2005,Number,9685
+State,Arizona,2004,Number,9194
+State,Arizona,2003,Number,7469
+State,Arizona,2001,Number,6050
+State,Arizona,2002,Number,6173
+State,Arizona,2000,Number,6475
+State,Arkansas,2000,Number,3045
+State,Arkansas,2001,Number,2959
+State,Arkansas,2002,Number,2971
+State,Arkansas,2003,Number,3014
+State,Arkansas,2004,Number,3124
+State,Arkansas,2006,Number,3434
+State,Arkansas,2005,Number,3238
+State,Arkansas,2007,Number,3614
+State,Arkansas,2013,Number,3797
+State,Arkansas,2018,Number,4234
+State,Arkansas,2008,Number,3522
+State,Arkansas,2009,Number,3657
+State,Arkansas,2015,Number,4548
+State,Arkansas,2020,Number,4280
+State,Arkansas,2011,Number,3732
+State,Arkansas,2012,Number,3711
+State,Arkansas,2014,Number,3806
+State,Arkansas,2016,Number,4880
+State,Arkansas,2017,Number,4776
+State,Arkansas,2022,Number,3952
+State,Arkansas,2024,Number,3449
+State,Arkansas,2019,Number,4127
+State,Arkansas,2021,Number,4515
+State,Arkansas,2023,Number,4344
+State,Arkansas,2010,Number,3770
+State,California,2010,Number,57708
+State,California,2023,Number,44468
+State,California,2021,Number,47871
+State,California,2019,Number,51268
+State,California,2024,Number,40301
+State,California,2022,Number,45924
+State,California,2017,Number,51869
+State,California,2016,Number,54685
+State,California,2014,Number,56771
+State,California,2012,Number,54288
+State,California,2011,Number,54754
+State,California,2020,Number,50737
+State,California,2015,Number,55983
+State,California,2008,Number,67323
+State,California,2009,Number,60198
+State,California,2018,Number,52337
+State,California,2013,Number,56577
+State,California,2007,Number,73998
+State,California,2005,Number,80247
+State,California,2006,Number,78373
+State,California,2003,Number,97261
+State,California,2004,Number,82641
+State,California,2002,Number,100451
+State,California,2001,Number,107168
+State,California,2000,Number,112807
+State,Colorado,2000,Number,7533
+State,Colorado,2002,Number,9209
+State,Colorado,2001,Number,7138
+State,Colorado,2003,Number,8754
+State,Colorado,2004,Number,8196
+State,Colorado,2006,Number,8139
+State,Colorado,2005,Number,8213
+State,Colorado,2007,Number,7690
+State,Colorado,2013,Number,5851
+State,Colorado,2018,Number,5542
+State,Colorado,2008,Number,7921
+State,Colorado,2009,Number,7927
+State,Colorado,2015,Number,5644
+State,Colorado,2020,Number,4804
+State,Colorado,2011,Number,6488
+State,Colorado,2012,Number,6003
+State,Colorado,2014,Number,5787
+State,Colorado,2016,Number,5733
+State,Colorado,2017,Number,5704
+State,Colorado,2022,Number,4133
+State,Colorado,2024,Number,4157
+State,Colorado,2019,Number,5340
+State,Colorado,2021,Number,4248
+State,Colorado,2023,Number,4428
+State,Colorado,2010,Number,6980
+State,Connecticut,2010,Number,4462
+State,Connecticut,2023,Number,3236
+State,Connecticut,2021,Number,3488
+State,Connecticut,2019,Number,4333
+State,Connecticut,2024,Number,3352
+State,Connecticut,2022,Number,3295
+State,Connecticut,2017,Number,4135
+State,Connecticut,2016,Number,4119
+State,Connecticut,2014,Number,4069
+State,Connecticut,2012,Number,4563
+State,Connecticut,2011,Number,4926
+State,Connecticut,2020,Number,4034
+State,Connecticut,2015,Number,3908
+State,Connecticut,2009,Number,4761
+State,Connecticut,2008,Number,5373
+State,Connecticut,2018,Number,4225
+State,Connecticut,2013,Number,4245
+State,Connecticut,2007,Number,5591
+State,Connecticut,2005,Number,7032
+State,Connecticut,2006,Number,7448
+State,Connecticut,2004,Number,6803
+State,Connecticut,2003,Number,6742
+State,Connecticut,2001,Number,7440
+State,Connecticut,2002,Number,6007
+State,Connecticut,2000,Number,6996
+State,Delaware,2000,Number,1098
+State,Delaware,2002,Number,886
+State,Delaware,2001,Number,1023
+State,Delaware,2003,Number,814
+State,Delaware,2004,Number,849
+State,Delaware,2006,Number,1074
+State,Delaware,2005,Number,962
+State,Delaware,2007,Number,1156
+State,Delaware,2013,Number,702
+State,Delaware,2018,Number,719
+State,Delaware,2008,Number,938
+State,Delaware,2009,Number,814
+State,Delaware,2015,Number,682
+State,Delaware,2020,Number,481
+State,Delaware,2011,Number,845
+State,Delaware,2012,Number,799
+State,Delaware,2014,Number,635
+State,Delaware,2016,Number,780
+State,Delaware,2017,Number,787
+State,Delaware,2022,Number,548
+State,Delaware,2024,Number,538
+State,Delaware,2019,Number,576
+State,Delaware,2021,Number,444
+State,Delaware,2023,Number,603
+State,Delaware,2010,Number,739
+City,District of Columbia,2010,Number,2066
+City,District of Columbia,2023,Number,498
+City,District of Columbia,2021,Number,504
+City,District of Columbia,2019,Number,672
+City,District of Columbia,2024,Number,545
+City,District of Columbia,2022,Number,427
+City,District of Columbia,2017,Number,751
+City,District of Columbia,2016,Number,826
+City,District of Columbia,2014,Number,981
+City,District of Columbia,2012,Number,1551
+City,District of Columbia,2011,Number,1797
+City,District of Columbia,2020,Number,577
+City,District of Columbia,2015,Number,947
+City,District of Columbia,2009,Number,2111
+City,District of Columbia,2008,Number,2217
+City,District of Columbia,2018,Number,707
+City,District of Columbia,2013,Number,1311
+City,District of Columbia,2007,Number,2148
+City,District of Columbia,2005,Number,2519
+City,District of Columbia,2006,Number,2368
+City,District of Columbia,2004,Number,2608
+City,District of Columbia,2003,Number,3092
+City,District of Columbia,2001,Number,3339
+City,District of Columbia,2002,Number,3321
+City,District of Columbia,2000,Number,3054
+State,Florida,2000,Number,36608
+State,Florida,2001,Number,32477
+State,Florida,2002,Number,31963
+State,Florida,2003,Number,30677
+State,Florida,2004,Number,28864
+State,Florida,2006,Number,29229
+State,Florida,2005,Number,29312
+State,Florida,2007,Number,26755
+State,Florida,2013,Number,18016
+State,Florida,2018,Number,24404
+State,Florida,2008,Number,22187
+State,Florida,2009,Number,19156
+State,Florida,2015,Number,22362
+State,Florida,2020,Number,23518
+State,Florida,2011,Number,19760
+State,Florida,2012,Number,19536
+State,Florida,2014,Number,19712
+State,Florida,2016,Number,23810
+State,Florida,2017,Number,24641
+State,Florida,2022,Number,22493
+State,Florida,2024,Number,17454
+State,Florida,2019,Number,24563
+State,Florida,2021,Number,23507
+State,Florida,2023,Number,20322
+State,Florida,2010,Number,18753
+State,Georgia,2010,Number,6895
+State,Georgia,2023,Number,11154
+State,Georgia,2021,Number,10504
+State,Georgia,2019,Number,12867
+State,Georgia,2024,Number,11055
+State,Georgia,2022,Number,10838
+State,Georgia,2017,Number,13146
+State,Georgia,2016,Number,12381
+State,Georgia,2014,Number,9005
+State,Georgia,2012,Number,7671
+State,Georgia,2011,Number,7591
+State,Georgia,2020,Number,11370
+State,Georgia,2015,Number,10935
+State,Georgia,2009,Number,8020
+State,Georgia,2008,Number,9984
+State,Georgia,2018,Number,13793
+State,Georgia,2013,Number,7607
+State,Georgia,2007,Number,12195
+State,Georgia,2005,Number,13965
+State,Georgia,2006,Number,13175
+State,Georgia,2004,Number,14216
+State,Georgia,2003,Number,13578
+State,Georgia,2001,Number,13175
+State,Georgia,2002,Number,13149
+State,Georgia,2000,Number,11204
+State,Hawaii,2000,Number,2401
+State,Hawaii,2001,Number,2584
+State,Hawaii,2002,Number,2762
+State,Hawaii,2003,Number,2886
+State,Hawaii,2004,Number,2948
+State,Hawaii,2006,Number,2355
+State,Hawaii,2005,Number,2745
+State,Hawaii,2007,Number,1926
+State,Hawaii,2013,Number,1085
+State,Hawaii,2008,Number,1622
+State,Hawaii,2018,Number,1687
+State,Hawaii,2009,Number,1455
+State,Hawaii,2015,Number,1360
+State,Hawaii,2020,Number,1593
+State,Hawaii,2011,Number,1122
+State,Hawaii,2012,Number,1079
+State,Hawaii,2014,Number,1221
+State,Hawaii,2016,Number,1605
+State,Hawaii,2017,Number,1607
+State,Hawaii,2022,Number,1341
+State,Hawaii,2024,Number,997
+State,Hawaii,2019,Number,1706
+State,Hawaii,2021,Number,1418
+State,Hawaii,2023,Number,1032
+State,Hawaii,2010,Number,1215
+State,Idaho,2010,Number,1462
+State,Idaho,2023,Number,1537
+State,Idaho,2021,Number,1601
+State,Idaho,2019,Number,1752
+State,Idaho,2024,Number,1323
+State,Idaho,2022,Number,1548
+State,Idaho,2017,Number,1593
+State,Idaho,2016,Number,1518
+State,Idaho,2014,Number,1208
+State,Idaho,2012,Number,1234
+State,Idaho,2011,Number,1354
+State,Idaho,2020,Number,1534
+State,Idaho,2015,Number,1351
+State,Idaho,2009,Number,1446
+State,Idaho,2018,Number,1814
+State,Idaho,2008,Number,1723
+State,Idaho,2013,Number,1342
+State,Idaho,2007,Number,1870
+State,Idaho,2005,Number,1818
+State,Idaho,2006,Number,1850
+State,Idaho,2004,Number,1565
+State,Idaho,2003,Number,1401
+State,Idaho,2002,Number,1246
+State,Idaho,2001,Number,1114
+State,Idaho,2000,Number,1015
+State,Illinois,2000,Number,29565
+State,Illinois,2001,Number,28202
+State,Illinois,2002,Number,24344
+State,Illinois,2003,Number,21608
+State,Illinois,2004,Number,19931
+State,Illinois,2006,Number,18371
+State,Illinois,2005,Number,19431
+State,Illinois,2007,Number,17864
+State,Illinois,2013,Number,16706
+State,Illinois,2008,Number,17843
+State,Illinois,2018,Number,16840
+State,Illinois,2009,Number,17080
+State,Illinois,2015,Number,16654
+State,Illinois,2020,Number,20568
+State,Illinois,2011,Number,17641
+State,Illinois,2012,Number,16637
+State,Illinois,2014,Number,17140
+State,Illinois,2016,Number,16113
+State,Illinois,2017,Number,15930
+State,Illinois,2022,Number,20738
+State,Illinois,2024,Number,17867
+State,Illinois,2019,Number,18317
+State,Illinois,2021,Number,21086
+State,Illinois,2023,Number,19486
+State,Illinois,2010,Number,17730
+State,Indiana,2010,Number,12276
+State,Indiana,2023,Number,10563
+State,Indiana,2021,Number,13239
+State,Indiana,2019,Number,16307
+State,Indiana,2024,Number,11895
+State,Indiana,2022,Number,11457
+State,Indiana,2017,Number,20904
+State,Indiana,2016,Number,19837
+State,Indiana,2014,Number,14452
+State,Indiana,2012,Number,11334
+State,Indiana,2011,Number,10779
+State,Indiana,2020,Number,15084
+State,Indiana,2015,Number,17023
+State,Indiana,2009,Number,12437
+State,Indiana,2018,Number,18560
+State,Indiana,2008,Number,12386
+State,Indiana,2013,Number,12382
+State,Indiana,2007,Number,11290
+State,Indiana,2005,Number,11243
+State,Indiana,2006,Number,11384
+State,Indiana,2004,Number,9778
+State,Indiana,2003,Number,8815
+State,Indiana,2002,Number,8478
+State,Indiana,2001,Number,8383
+State,Indiana,2000,Number,7482
+State,Iowa,2000,Number,5068
+State,Iowa,2001,Number,5202
+State,Iowa,2002,Number,5238
+State,Iowa,2003,Number,5011
+State,Iowa,2004,Number,5384
+State,Iowa,2006,Number,9040
+State,Iowa,2005,Number,6794
+State,Iowa,2007,Number,8005
+State,Iowa,2013,Number,6341
+State,Iowa,2008,Number,6743
+State,Iowa,2018,Number,6249
+State,Iowa,2009,Number,6564
+State,Iowa,2015,Number,5918
+State,Iowa,2020,Number,4660
+State,Iowa,2011,Number,6344
+State,Iowa,2012,Number,6262
+State,Iowa,2014,Number,5978
+State,Iowa,2016,Number,6004
+State,Iowa,2017,Number,5952
+State,Iowa,2022,Number,4048
+State,Iowa,2024,Number,3893
+State,Iowa,2019,Number,5955
+State,Iowa,2021,Number,4144
+State,Iowa,2023,Number,3937
+State,Iowa,2010,Number,6533
+State,Kansas,2010,Number,5979
+State,Kansas,2023,Number,6449
+State,Kansas,2021,Number,7085
+State,Kansas,2019,Number,8066
+State,Kansas,2024,Number,6325
+State,Kansas,2022,Number,6808
+State,Kansas,2017,Number,7753
+State,Kansas,2016,Number,7302
+State,Kansas,2014,Number,6762
+State,Kansas,2012,Number,6002
+State,Kansas,2011,Number,5852
+State,Kansas,2020,Number,7242
+State,Kansas,2015,Number,7223
+State,Kansas,2009,Number,5691
+State,Kansas,2018,Number,8068
+State,Kansas,2008,Number,6306
+State,Kansas,2013,Number,6441
+State,Kansas,2007,Number,6619
+State,Kansas,2005,Number,5835
+State,Kansas,2006,Number,6393
+State,Kansas,2004,Number,6060
+State,Kansas,2003,Number,5781
+State,Kansas,2002,Number,6190
+State,Kansas,2001,Number,6409
+State,Kansas,2000,Number,6569
+State,Kentucky,2000,Number,6017
+State,Kentucky,2001,Number,6165
+State,Kentucky,2002,Number,6814
+State,Kentucky,2003,Number,6895
+State,Kentucky,2004,Number,6998
+State,Kentucky,2006,Number,7606
+State,Kentucky,2005,Number,7220
+State,Kentucky,2007,Number,7207
+State,Kentucky,2013,Number,7162
+State,Kentucky,2008,Number,7182
+State,Kentucky,2018,Number,9355
+State,Kentucky,2009,Number,6872
+State,Kentucky,2015,Number,7538
+State,Kentucky,2020,Number,8675
+State,Kentucky,2011,Number,6659
+State,Kentucky,2012,Number,6979
+State,Kentucky,2014,Number,7506
+State,Kentucky,2016,Number,7812
+State,Kentucky,2017,Number,8089
+State,Kentucky,2022,Number,7903
+State,Kentucky,2024,Number,8244
+State,Kentucky,2019,Number,9148
+State,Kentucky,2021,Number,8369
+State,Kentucky,2023,Number,8231
+State,Kentucky,2010,Number,6983
+State,Louisiana,2010,Number,4453
+State,Louisiana,2023,Number,4410
+State,Louisiana,2021,Number,3301
+State,Louisiana,2019,Number,3919
+State,Louisiana,2024,Number,4494
+State,Louisiana,2022,Number,3682
+State,Louisiana,2017,Number,4460
+State,Louisiana,2016,Number,4461
+State,Louisiana,2014,Number,4329
+State,Louisiana,2012,Number,4044
+State,Louisiana,2011,Number,4531
+State,Louisiana,2020,Number,3542
+State,Louisiana,2015,Number,4545
+State,Louisiana,2009,Number,4786
+State,Louisiana,2018,Number,4562
+State,Louisiana,2008,Number,5065
+State,Louisiana,2013,Number,3955
+State,Louisiana,2007,Number,5323
+State,Louisiana,2005,Number,4833
+State,Louisiana,2006,Number,5213
+State,Louisiana,2004,Number,4397
+State,Louisiana,2003,Number,4541
+State,Louisiana,2002,Number,4829
+State,Louisiana,2001,Number,5024
+State,Louisiana,2000,Number,5406
+State,Maine,2000,Number,3191
+State,Maine,2001,Number,3226
+State,Maine,2002,Number,3084
+State,Maine,2003,Number,2760
+State,Maine,2004,Number,2584
+State,Maine,2006,Number,2076
+State,Maine,2005,Number,2309
+State,Maine,2007,Number,1897
+State,Maine,2013,Number,1787
+State,Maine,2008,Number,1864
+State,Maine,2018,Number,1768
+State,Maine,2015,Number,1873
+State,Maine,2020,Number,2291
+State,Maine,2009,Number,1646
+State,Maine,2010,Number,1546
+State,Maine,2011,Number,1296
+State,Maine,2012,Number,1512
+State,Maine,2014,Number,1864
+State,Maine,2016,Number,1837
+State,Maine,2017,Number,1584
+State,Maine,2022,Number,2429
+State,Maine,2024,Number,2468
+State,Maine,2019,Number,2096
+State,Maine,2021,Number,2202
+State,Maine,2023,Number,2497
+State,Maryland,2023,Number,3819
+State,Maryland,2021,Number,3635
+State,Maryland,2019,Number,3840
+State,Maryland,2024,Number,3634
+State,Maryland,2022,Number,3609
+State,Maryland,2017,Number,3923
+State,Maryland,2016,Number,3841
+State,Maryland,2014,Number,4032
+State,Maryland,2012,Number,4884
+State,Maryland,2011,Number,5460
+State,Maryland,2010,Number,6098
+State,Maryland,2020,Number,3800
+State,Maryland,2015,Number,3913
+State,Maryland,2018,Number,3973
+State,Maryland,2009,Number,7052
+State,Maryland,2008,Number,7749
+State,Maryland,2013,Number,4467
+State,Maryland,2007,Number,8068
+State,Maryland,2005,Number,10867
+State,Maryland,2006,Number,11505
+State,Maryland,2004,Number,11111
+State,Maryland,2003,Number,11521
+State,Maryland,2002,Number,12026
+State,Maryland,2001,Number,12564
+State,Maryland,2000,Number,13113
+State,Massachusetts,2000,Number,11619
+State,Massachusetts,2001,Number,11568
+State,Massachusetts,2002,Number,12510
+State,Massachusetts,2003,Number,12608
+State,Massachusetts,2004,Number,12562
+State,Massachusetts,2006,Number,11499
+State,Massachusetts,2005,Number,12197
+State,Massachusetts,2007,Number,10488
+State,Massachusetts,2013,Number,8539
+State,Massachusetts,2008,Number,10427
+State,Massachusetts,2018,Number,10612
+State,Massachusetts,2015,Number,10283
+State,Massachusetts,2020,Number,9320
+State,Massachusetts,2010,Number,8958
+State,Massachusetts,2009,Number,9650
+State,Massachusetts,2011,Number,8619
+State,Massachusetts,2012,Number,8522
+State,Massachusetts,2014,Number,9940
+State,Massachusetts,2016,Number,10910
+State,Massachusetts,2017,Number,10916
+State,Massachusetts,2022,Number,8824
+State,Massachusetts,2024,Number,8757
+State,Massachusetts,2019,Number,9871
+State,Massachusetts,2021,Number,9190
+State,Massachusetts,2023,Number,8922
+State,Michigan,2023,Number,9504
+State,Michigan,2021,Number,9529
+State,Michigan,2019,Number,11671
+State,Michigan,2024,Number,9593
+State,Michigan,2022,Number,8940
+State,Michigan,2017,Number,11918
+State,Michigan,2016,Number,11599
+State,Michigan,2014,Number,13452
+State,Michigan,2012,Number,14522
+State,Michigan,2011,Number,15091
+State,Michigan,2009,Number,17723
+State,Michigan,2010,Number,16412
+State,Michigan,2020,Number,10661
+State,Michigan,2015,Number,12248
+State,Michigan,2018,Number,12121
+State,Michigan,2008,Number,20171
+State,Michigan,2013,Number,14615
+State,Michigan,2007,Number,20830
+State,Michigan,2005,Number,20498
+State,Michigan,2006,Number,20142
+State,Michigan,2004,Number,21173
+State,Michigan,2003,Number,21376
+State,Michigan,2002,Number,21251
+State,Michigan,2001,Number,20896
+State,Michigan,2000,Number,20034
+State,Minnesota,2000,Number,8530
+State,Minnesota,2001,Number,8167
+State,Minnesota,2002,Number,8052
+State,Minnesota,2003,Number,6770
+State,Minnesota,2004,Number,6540
+State,Minnesota,2006,Number,7156
+State,Minnesota,2005,Number,6978
+State,Minnesota,2007,Number,6711
+State,Minnesota,2013,Number,5641
+State,Minnesota,2008,Number,6028
+State,Minnesota,2018,Number,9271
+State,Minnesota,2015,Number,7610
+State,Minnesota,2020,Number,7763
+State,Minnesota,2010,Number,5050
+State,Minnesota,2009,Number,5410
+State,Minnesota,2011,Number,4995
+State,Minnesota,2012,Number,5436
+State,Minnesota,2014,Number,6324
+State,Minnesota,2016,Number,8793
+State,Minnesota,2017,Number,9651
+State,Minnesota,2022,Number,6133
+State,Minnesota,2024,Number,5861
+State,Minnesota,2019,Number,8400
+State,Minnesota,2021,Number,6870
+State,Minnesota,2023,Number,5954
+State,Mississippi,2023,Number,3592
+State,Mississippi,2021,Number,3540
+State,Mississippi,2019,Number,4161
+State,Mississippi,2024,Number,3911
+State,Mississippi,2022,Number,3825
+State,Mississippi,2017,Number,5440
+State,Mississippi,2016,Number,5486
+State,Mississippi,2014,Number,4380
+State,Mississippi,2012,Number,3658
+State,Mississippi,2011,Number,3597
+State,Mississippi,2009,Number,3320
+State,Mississippi,2010,Number,3582
+State,Mississippi,2020,Number,3594
+State,Mississippi,2015,Number,4773
+State,Mississippi,2018,Number,4703
+State,Mississippi,2008,Number,3292
+State,Mississippi,2013,Number,3779
+State,Mississippi,2007,Number,3310
+State,Mississippi,2005,Number,3269
+State,Mississippi,2006,Number,3203
+State,Mississippi,2004,Number,2989
+State,Mississippi,2003,Number,2721
+State,Mississippi,2002,Number,2686
+State,Mississippi,2001,Number,3443
+State,Mississippi,2000,Number,3292
+State,Missouri,2000,Number,13181
+State,Missouri,2001,Number,13394
+State,Missouri,2002,Number,13029
+State,Missouri,2003,Number,11900
+State,Missouri,2004,Number,11778
+State,Missouri,2006,Number,10181
+State,Missouri,2005,Number,11433
+State,Missouri,2007,Number,10281
+State,Missouri,2013,Number,10624
+State,Missouri,2008,Number,10128
+State,Missouri,2018,Number,12659
+State,Missouri,2015,Number,12160
+State,Missouri,2020,Number,12650
+State,Missouri,2010,Number,9880
+State,Missouri,2009,Number,9912
+State,Missouri,2011,Number,9220
+State,Missouri,2012,Number,9978
+State,Missouri,2014,Number,11834
+State,Missouri,2016,Number,12408
+State,Missouri,2017,Number,12390
+State,Missouri,2022,Number,12513
+State,Missouri,2024,Number,12721
+State,Missouri,2019,Number,12685
+State,Missouri,2021,Number,13194
+State,Missouri,2023,Number,12100
+State,Montana,2023,Number,2332
+State,Montana,2021,Number,3083
+State,Montana,2019,Number,3697
+State,Montana,2024,Number,2267
+State,Montana,2022,Number,2672
+State,Montana,2017,Number,3853
+State,Montana,2016,Number,3366
+State,Montana,2014,Number,2345
+State,Montana,2012,Number,1937
+State,Montana,2011,Number,1794
+State,Montana,2009,Number,1639
+State,Montana,2010,Number,1723
+State,Montana,2020,Number,3406
+State,Montana,2015,Number,2807
+State,Montana,2018,Number,3946
+State,Montana,2008,Number,1600
+State,Montana,2013,Number,2232
+State,Montana,2007,Number,1737
+State,Montana,2005,Number,2222
+State,Montana,2006,Number,1962
+State,Montana,2004,Number,2030
+State,Montana,2003,Number,1866
+State,Montana,2002,Number,1912
+State,Montana,2001,Number,2008
+State,Montana,2000,Number,2180
+State,Nebraska,2000,Number,5674
+State,Nebraska,2001,Number,6254
+State,Nebraska,2002,Number,5724
+State,Nebraska,2003,Number,5148
+State,Nebraska,2004,Number,6292
+State,Nebraska,2005,Number,6231
+State,Nebraska,2007,Number,5875
+State,Nebraska,2006,Number,6187
+State,Nebraska,2013,Number,4584
+State,Nebraska,2008,Number,5591
+State,Nebraska,2018,Number,3524
+State,Nebraska,2015,Number,3887
+State,Nebraska,2020,Number,3605
+State,Nebraska,2010,Number,5358
+State,Nebraska,2009,Number,5343
+State,Nebraska,2011,Number,5117
+State,Nebraska,2012,Number,5116
+State,Nebraska,2014,Number,3863
+State,Nebraska,2016,Number,4012
+State,Nebraska,2017,Number,4195
+State,Nebraska,2022,Number,3873
+State,Nebraska,2024,Number,3743
+State,Nebraska,2019,Number,3506
+State,Nebraska,2021,Number,3835
+State,Nebraska,2023,Number,3718
+State,Nevada,2023,Number,4006
+State,Nevada,2021,Number,4183
+State,Nevada,2019,Number,4541
+State,Nevada,2024,Number,4111
+State,Nevada,2022,Number,4047
+State,Nevada,2017,Number,4408
+State,Nevada,2016,Number,4251
+State,Nevada,2014,Number,4543
+State,Nevada,2012,Number,4746
+State,Nevada,2011,Number,4638
+State,Nevada,2009,Number,4779
+State,Nevada,2010,Number,4806
+State,Nevada,2020,Number,4372
+State,Nevada,2015,Number,4485
+State,Nevada,2018,Number,4532
+State,Nevada,2008,Number,5023
+State,Nevada,2013,Number,4775
+State,Nevada,2007,Number,5055
+State,Nevada,2005,Number,4623
+State,Nevada,2006,Number,5047
+State,Nevada,2004,Number,4025
+State,Nevada,2003,Number,3525
+State,Nevada,2002,Number,3291
+State,Nevada,2001,Number,2959
+State,Nevada,2000,Number,1615
+State,New Hampshire,2000,Number,1311
+State,New Hampshire,2001,Number,1288
+State,New Hampshire,2002,Number,1291
+State,New Hampshire,2003,Number,1217
+State,New Hampshire,2004,Number,1236
+State,New Hampshire,2005,Number,1178
+State,New Hampshire,2007,Number,1102
+State,New Hampshire,2006,Number,1146
+State,New Hampshire,2013,Number,850
+State,New Hampshire,2008,Number,1029
+State,New Hampshire,2018,Number,1531
+State,New Hampshire,2015,Number,1004
+State,New Hampshire,2020,Number,1184
+State,New Hampshire,2010,Number,839
+State,New Hampshire,2009,Number,930
+State,New Hampshire,2011,Number,742
+State,New Hampshire,2012,Number,768
+State,New Hampshire,2014,Number,885
+State,New Hampshire,2016,Number,1220
+State,New Hampshire,2017,Number,1461
+State,New Hampshire,2022,Number,1181
+State,New Hampshire,2024,Number,1164
+State,New Hampshire,2019,Number,1225
+State,New Hampshire,2021,Number,1091
+State,New Hampshire,2023,Number,1159
+State,New Jersey,2023,Number,2804
+State,New Jersey,2021,Number,3188
+State,New Jersey,2019,Number,4430
+State,New Jersey,2024,Number,2826
+State,New Jersey,2022,Number,2786
+State,New Jersey,2017,Number,5946
+State,New Jersey,2016,Number,6527
+State,New Jersey,2014,Number,7138
+State,New Jersey,2012,Number,6848
+State,New Jersey,2011,Number,6440
+State,New Jersey,2009,Number,7809
+State,New Jersey,2010,Number,7172
+State,New Jersey,2020,Number,3788
+State,New Jersey,2015,Number,6874
+State,New Jersey,2018,Number,5526
+State,New Jersey,2008,Number,8510
+State,New Jersey,2013,Number,6946
+State,New Jersey,2006,Number,10594
+State,New Jersey,2007,Number,8990
+State,New Jersey,2005,Number,11211
+State,New Jersey,2004,Number,12289
+State,New Jersey,2003,Number,12818
+State,New Jersey,2002,Number,11442
+State,New Jersey,2001,Number,10666
+State,New Jersey,2000,Number,9794
+State,New Mexico,2000,Number,1912
+State,New Mexico,2001,Number,1757
+State,New Mexico,2002,Number,1885
+State,New Mexico,2003,Number,2122
+State,New Mexico,2004,Number,2157
+State,New Mexico,2005,Number,2316
+State,New Mexico,2007,Number,2423
+State,New Mexico,2006,Number,2357
+State,New Mexico,2013,Number,2077
+State,New Mexico,2008,Number,2221
+State,New Mexico,2018,Number,2508
+State,New Mexico,2015,Number,2471
+State,New Mexico,2020,Number,2120
+State,New Mexico,2010,Number,1869
+State,New Mexico,2009,Number,2009
+State,New Mexico,2011,Number,1859
+State,New Mexico,2012,Number,1918
+State,New Mexico,2014,Number,2366
+State,New Mexico,2016,Number,2610
+State,New Mexico,2017,Number,2657
+State,New Mexico,2022,Number,1800
+State,New Mexico,2024,Number,2255
+State,New Mexico,2019,Number,2326
+State,New Mexico,2021,Number,1841
+State,New Mexico,2023,Number,2143
+State,New York,2023,Number,14928
+State,New York,2021,Number,14657
+State,New York,2019,Number,16086
+State,New York,2024,Number,14819
+State,New York,2022,Number,14131
+State,New York,2017,Number,18976
+State,New York,2016,Number,19702
+State,New York,2014,Number,22422
+State,New York,2012,Number,23924
+State,New York,2011,Number,24962
+State,New York,2009,Number,27992
+State,New York,2010,Number,26783
+State,New York,2020,Number,15497
+State,New York,2015,Number,20921
+State,New York,2018,Number,16385
+State,New York,2008,Number,29493
+State,New York,2013,Number,22975
+State,New York,2006,Number,29973
+State,New York,2007,Number,30058
+State,New York,2005,Number,30458
+State,New York,2004,Number,33445
+State,New York,2003,Number,37067
+State,New York,2002,Number,40753
+State,New York,2001,Number,43365
+State,New York,2000,Number,47118
+State,North Carolina,2000,Number,10847
+State,North Carolina,2001,Number,10130
+State,North Carolina,2002,Number,9527
+State,North Carolina,2003,Number,9534
+State,North Carolina,2004,Number,10077
+State,North Carolina,2005,Number,10698
+State,North Carolina,2007,Number,10728
+State,North Carolina,2006,Number,11115
+State,North Carolina,2013,Number,9036
+State,North Carolina,2008,Number,9841
+State,North Carolina,2018,Number,10543
+State,North Carolina,2015,Number,10324
+State,North Carolina,2020,Number,10630
+State,North Carolina,2010,Number,8828
+State,North Carolina,2009,Number,9547
+State,North Carolina,2011,Number,8601
+State,North Carolina,2012,Number,8461
+State,North Carolina,2014,Number,9859
+State,North Carolina,2016,Number,10425
+State,North Carolina,2017,Number,10706
+State,North Carolina,2022,Number,11258
+State,North Carolina,2024,Number,11117
+State,North Carolina,2019,Number,11223
+State,North Carolina,2021,Number,11238
+State,North Carolina,2023,Number,11823
+State,North Dakota,2023,Number,1473
+State,North Dakota,2021,Number,1510
+State,North Dakota,2019,Number,1502
+State,North Dakota,2024,Number,1237
+State,North Dakota,2022,Number,1547
+State,North Dakota,2017,Number,1495
+State,North Dakota,2016,Number,1407
+State,North Dakota,2014,Number,1365
+State,North Dakota,2012,Number,1109
+State,North Dakota,2011,Number,1066
+State,North Dakota,2009,Number,1224
+State,North Dakota,2010,Number,1077
+State,North Dakota,2020,Number,1556
+State,North Dakota,2015,Number,1359
+State,North Dakota,2018,Number,1576
+State,North Dakota,2008,Number,1240
+State,North Dakota,2013,Number,1227
+State,North Dakota,2006,Number,1331
+State,North Dakota,2007,Number,1252
+State,North Dakota,2005,Number,1370
+State,North Dakota,2004,Number,1314
+State,North Dakota,2003,Number,1238
+State,North Dakota,2002,Number,1197
+State,North Dakota,2001,Number,1167
+State,North Dakota,2000,Number,1129
+State,Ohio,2000,Number,20365
+State,Ohio,2001,Number,21584
+State,Ohio,2002,Number,21038
+State,Ohio,2003,Number,19323
+State,Ohio,2004,Number,18004
+State,Ohio,2005,Number,17446
+State,Ohio,2007,Number,14532
+State,Ohio,2006,Number,16631
+State,Ohio,2013,Number,12223
+State,Ohio,2008,Number,13703
+State,Ohio,2018,Number,15730
+State,Ohio,2015,Number,13205
+State,Ohio,2020,Number,16017
+State,Ohio,2010,Number,11949
+State,Ohio,2009,Number,12197
+State,Ohio,2011,Number,12069
+State,Ohio,2012,Number,11877
+State,Ohio,2014,Number,12519
+State,Ohio,2016,Number,13725
+State,Ohio,2017,Number,14961
+State,Ohio,2022,Number,14946
+State,Ohio,2024,Number,15044
+State,Ohio,2019,Number,16387
+State,Ohio,2021,Number,15449
+State,Ohio,2023,Number,15616
+State,Oklahoma,2023,Number,6493
+State,Oklahoma,2021,Number,7479
+State,Oklahoma,2019,Number,8306
+State,Oklahoma,2024,Number,6050
+State,Oklahoma,2022,Number,7012
+State,Oklahoma,2017,Number,9315
+State,Oklahoma,2016,Number,10047
+State,Oklahoma,2014,Number,11463
+State,Oklahoma,2012,Number,9134
+State,Oklahoma,2011,Number,8280
+State,Oklahoma,2009,Number,8712
+State,Oklahoma,2010,Number,7857
+State,Oklahoma,2020,Number,8052
+State,Oklahoma,2015,Number,11173
+State,Oklahoma,2018,Number,8634
+State,Oklahoma,2008,Number,10595
+State,Oklahoma,2013,Number,10555
+State,Oklahoma,2006,Number,11816
+State,Oklahoma,2007,Number,11765
+State,Oklahoma,2005,Number,11393
+State,Oklahoma,2004,Number,11325
+State,Oklahoma,2003,Number,9252
+State,Oklahoma,2002,Number,8812
+State,Oklahoma,2001,Number,8674
+State,Oklahoma,2000,Number,8406
+State,Oregon,2000,Number,9193
+State,Oregon,2001,Number,8966
+State,Oregon,2002,Number,9101
+State,Oregon,2003,Number,9117
+State,Oregon,2005,Number,11020
+State,Oregon,2004,Number,10048
+State,Oregon,2007,Number,9562
+State,Oregon,2006,Number,10661
+State,Oregon,2013,Number,8202
+State,Oregon,2008,Number,8988
+State,Oregon,2018,Number,7577
+State,Oregon,2015,Number,7369
+State,Oregon,2020,Number,6026
+State,Oregon,2010,Number,9001
+State,Oregon,2009,Number,8650
+State,Oregon,2011,Number,8531
+State,Oregon,2012,Number,8686
+State,Oregon,2014,Number,7444
+State,Oregon,2016,Number,7625
+State,Oregon,2017,Number,7972
+State,Oregon,2022,Number,4826
+State,Oregon,2024,Number,4479
+State,Oregon,2019,Number,6994
+State,Oregon,2021,Number,5269
+State,Oregon,2023,Number,4773
+State,Pennsylvania,2023,Number,12187
+State,Pennsylvania,2021,Number,13654
+State,Pennsylvania,2019,Number,15526
+State,Pennsylvania,2024,Number,11599
+State,Pennsylvania,2022,Number,12448
+State,Pennsylvania,2017,Number,16891
+State,Pennsylvania,2016,Number,16086
+State,Pennsylvania,2014,Number,14840
+State,Pennsylvania,2012,Number,14496
+State,Pennsylvania,2011,Number,14175
+State,Pennsylvania,2009,Number,16878
+State,Pennsylvania,2010,Number,15346
+State,Pennsylvania,2020,Number,14354
+State,Pennsylvania,2015,Number,16049
+State,Pennsylvania,2018,Number,16566
+State,Pennsylvania,2008,Number,19218
+State,Pennsylvania,2013,Number,14252
+State,Pennsylvania,2006,Number,21135
+State,Pennsylvania,2007,Number,20999
+State,Pennsylvania,2004,Number,21944
+State,Pennsylvania,2005,Number,21691
+State,Pennsylvania,2003,Number,20845
+State,Pennsylvania,2002,Number,21410
+State,Pennsylvania,2001,Number,21319
+State,Pennsylvania,2000,Number,21631
+State,Rhode Island,2000,Number,2302
+State,Rhode Island,2001,Number,2414
+State,Rhode Island,2002,Number,2383
+State,Rhode Island,2003,Number,2357
+State,Rhode Island,2005,Number,2509
+State,Rhode Island,2004,Number,2414
+State,Rhode Island,2007,Number,2768
+State,Rhode Island,2006,Number,2842
+State,Rhode Island,2013,Number,1789
+State,Rhode Island,2008,Number,2407
+State,Rhode Island,2018,Number,2003
+State,Rhode Island,2015,Number,1826
+State,Rhode Island,2020,Number,2140
+State,Rhode Island,2010,Number,2086
+State,Rhode Island,2009,Number,2112
+State,Rhode Island,2011,Number,1806
+State,Rhode Island,2012,Number,1707
+State,Rhode Island,2014,Number,1832
+State,Rhode Island,2016,Number,1654
+State,Rhode Island,2017,Number,1846
+State,Rhode Island,2022,Number,1723
+State,Rhode Island,2024,Number,1692
+State,Rhode Island,2021,Number,1823
+State,Rhode Island,2023,Number,1747
+State,Rhode Island,2019,Number,2200
+State,South Carolina,2019,Number,4521
+State,South Carolina,2023,Number,3569
+State,South Carolina,2021,Number,3944
+State,South Carolina,2024,Number,3368
+State,South Carolina,2022,Number,3793
+State,South Carolina,2017,Number,4041
+State,South Carolina,2016,Number,3968
+State,South Carolina,2014,Number,3461
+State,South Carolina,2012,Number,3113
+State,South Carolina,2011,Number,3821
+State,South Carolina,2009,Number,4938
+State,South Carolina,2010,Number,4485
+State,South Carolina,2020,Number,4070
+State,South Carolina,2015,Number,3726
+State,South Carolina,2018,Number,4456
+State,South Carolina,2008,Number,4999
+State,South Carolina,2013,Number,3188
+State,South Carolina,2006,Number,4920
+State,South Carolina,2007,Number,5167
+State,South Carolina,2004,Number,4635
+State,South Carolina,2005,Number,4757
+State,South Carolina,2003,Number,4801
+State,South Carolina,2002,Number,4818
+State,South Carolina,2001,Number,4774
+State,South Carolina,2000,Number,4525
+State,South Dakota,2000,Number,1215
+State,South Dakota,2001,Number,1367
+State,South Dakota,2003,Number,1537
+State,South Dakota,2002,Number,1396
+State,South Dakota,2005,Number,1704
+State,South Dakota,2004,Number,1582
+State,South Dakota,2007,Number,1566
+State,South Dakota,2006,Number,1648
+State,South Dakota,2013,Number,1253
+State,South Dakota,2008,Number,1482
+State,South Dakota,2018,Number,1560
+State,South Dakota,2015,Number,1280
+State,South Dakota,2020,Number,1683
+State,South Dakota,2010,Number,1485
+State,South Dakota,2009,Number,1484
+State,South Dakota,2011,Number,1407
+State,South Dakota,2012,Number,1399
+State,South Dakota,2014,Number,1174
+State,South Dakota,2016,Number,1416
+State,South Dakota,2017,Number,1603
+State,South Dakota,2022,Number,1615
+State,South Dakota,2024,Number,1685
+State,South Dakota,2021,Number,1647
+State,South Dakota,2023,Number,1661
+State,South Dakota,2019,Number,1706
+State,Tennessee,2019,Number,9290
+State,Tennessee,2023,Number,9065
+State,Tennessee,2021,Number,9227
+State,Tennessee,2024,Number,9141
+State,Tennessee,2022,Number,9050
+State,Tennessee,2017,Number,8558
+State,Tennessee,2016,Number,8333
+State,Tennessee,2014,Number,7607
+State,Tennessee,2012,Number,7978
+State,Tennessee,2011,Number,7647
+State,Tennessee,2009,Number,6723
+State,Tennessee,2010,Number,6786
+State,Tennessee,2020,Number,8839
+State,Tennessee,2015,Number,7780
+State,Tennessee,2018,Number,8929
+State,Tennessee,2008,Number,7219
+State,Tennessee,2013,Number,8180
+State,Tennessee,2006,Number,8618
+State,Tennessee,2007,Number,7751
+State,Tennessee,2004,Number,9590
+State,Tennessee,2005,Number,9017
+State,Tennessee,2003,Number,9487
+State,Tennessee,2001,Number,9679
+State,Tennessee,2000,Number,10144
+State,Tennessee,2002,Number,9359
+State,Texas,2000,Number,18190
+State,Texas,2001,Number,19739
+State,Texas,2002,Number,21353
+State,Texas,2003,Number,21880
+State,Texas,2005,Number,28883
+State,Texas,2004,Number,24529
+State,Texas,2007,Number,29878
+State,Texas,2006,Number,30848
+State,Texas,2008,Number,28148
+State,Texas,2013,Number,29625
+State,Texas,2018,Number,32960
+State,Texas,2015,Number,29990
+State,Texas,2020,Number,29991
+State,Texas,2010,Number,28954
+State,Texas,2009,Number,26686
+State,Texas,2011,Number,30109
+State,Texas,2012,Number,29613
+State,Texas,2014,Number,30358
+State,Texas,2016,Number,30738
+State,Texas,2017,Number,32150
+State,Texas,2022,Number,21357
+State,Texas,2024,Number,17776
+State,Texas,2021,Number,28042
+State,Texas,2023,Number,19168
+State,Texas,2019,Number,31427
+State,Utah,2019,Number,2488
+State,Utah,2023,Number,1866
+State,Utah,2021,Number,2119
+State,Utah,2024,Number,1706
+State,Utah,2022,Number,2067
+State,Utah,2017,Number,2954
+State,Utah,2016,Number,2838
+State,Utah,2014,Number,2960
+State,Utah,2012,Number,2766
+State,Utah,2011,Number,2701
+State,Utah,2009,Number,2759
+State,Utah,2010,Number,2886
+State,Utah,2020,Number,2373
+State,Utah,2015,Number,2704
+State,Utah,2018,Number,2611
+State,Utah,2013,Number,2706
+State,Utah,2008,Number,2714
+State,Utah,2006,Number,2427
+State,Utah,2007,Number,2765
+State,Utah,2004,Number,2108
+State,Utah,2005,Number,2285
+State,Utah,2003,Number,2033
+State,Utah,2002,Number,2025
+State,Utah,2001,Number,1957
+State,Utah,2000,Number,1805
+State,Vermont,2000,Number,1389
+State,Vermont,2001,Number,1382
+State,Vermont,2002,Number,1526
+State,Vermont,2003,Number,1409
+State,Vermont,2005,Number,1436
+State,Vermont,2004,Number,1432
+State,Vermont,2007,Number,1309
+State,Vermont,2008,Number,1200
+State,Vermont,2006,Number,1379
+State,Vermont,2013,Number,971
+State,Vermont,2018,Number,1308
+State,Vermont,2015,Number,1332
+State,Vermont,2020,Number,1078
+State,Vermont,2010,Number,933
+State,Vermont,2009,Number,1062
+State,Vermont,2011,Number,1010
+State,Vermont,2012,Number,975
+State,Vermont,2014,Number,1123
+State,Vermont,2016,Number,1323
+State,Vermont,2017,Number,1270
+State,Vermont,2022,Number,1096
+State,Vermont,2024,Number,945
+State,Vermont,2021,Number,1054
+State,Vermont,2023,Number,1005
+State,Vermont,2019,Number,1245
+State,Virginia,2019,Number,4925
+State,Virginia,2023,Number,4953
+State,Virginia,2021,Number,4977
+State,Virginia,2024,Number,5339
+State,Virginia,2022,Number,5039
+State,Virginia,2017,Number,4795
+State,Virginia,2016,Number,4890
+State,Virginia,2014,Number,4597
+State,Virginia,2012,Number,4579
+State,Virginia,2011,Number,4846
+State,Virginia,2009,Number,5927
+State,Virginia,2010,Number,5326
+State,Virginia,2020,Number,4773
+State,Virginia,2015,Number,4735
+State,Virginia,2018,Number,4915
+State,Virginia,2013,Number,4327
+State,Virginia,2006,Number,7843
+State,Virginia,2008,Number,6743
+State,Virginia,2007,Number,7665
+State,Virginia,2004,Number,6869
+State,Virginia,2005,Number,7022
+State,Virginia,2003,Number,7046
+State,Virginia,2002,Number,7109
+State,Virginia,2001,Number,6866
+State,Virginia,2000,Number,6789
+State,Washington,2000,Number,8945
+State,Washington,2001,Number,9101
+State,Washington,2002,Number,9669
+State,Washington,2003,Number,9213
+State,Washington,2005,Number,10068
+State,Washington,2004,Number,9368
+State,Washington,2007,Number,11107
+State,Washington,2008,Number,11247
+State,Washington,2006,Number,10457
+State,Washington,2013,Number,10208
+State,Washington,2018,Number,11399
+State,Washington,2015,Number,10665
+State,Washington,2020,Number,9616
+State,Washington,2010,Number,10136
+State,Washington,2009,Number,9922
+State,Washington,2011,Number,9533
+State,Washington,2012,Number,9606
+State,Washington,2014,Number,10630
+State,Washington,2016,Number,10959
+State,Washington,2017,Number,11355
+State,Washington,2022,Number,8049
+State,Washington,2024,Number,6192
+State,Washington,2021,Number,8894
+State,Washington,2023,Number,7047
+State,Washington,2019,Number,10909
+State,West Virginia,2019,Number,7269
+State,West Virginia,2023,Number,7276
+State,West Virginia,2021,Number,7152
+State,West Virginia,2024,Number,6959
+State,West Virginia,2022,Number,6951
+State,West Virginia,2017,Number,6633
+State,West Virginia,2016,Number,5973
+State,West Virginia,2014,Number,4556
+State,West Virginia,2012,Number,4562
+State,West Virginia,2011,Number,4475
+State,West Virginia,2009,Number,4237
+State,West Virginia,2010,Number,4097
+State,West Virginia,2020,Number,7334
+State,West Virginia,2015,Number,4956
+State,West Virginia,2018,Number,7138
+State,West Virginia,2013,Number,4389
+State,West Virginia,2006,Number,4226
+State,West Virginia,2008,Number,4412
+State,West Virginia,2007,Number,4388
+State,West Virginia,2002,Number,3220
+State,West Virginia,2004,Number,3990
+State,West Virginia,2005,Number,4295
+State,West Virginia,2003,Number,4069
+State,West Virginia,2001,Number,3298
+State,West Virginia,2000,Number,3388
+State,Wisconsin,2000,Number,10504
+State,Wisconsin,2001,Number,9497
+State,Wisconsin,2002,Number,8744
+State,Wisconsin,2003,Number,7824
+State,Wisconsin,2004,Number,7812
+State,Wisconsin,2005,Number,8109
+State,Wisconsin,2007,Number,7541
+State,Wisconsin,2008,Number,7403
+State,Wisconsin,2006,Number,7641
+State,Wisconsin,2013,Number,6539
+State,Wisconsin,2018,Number,7819
+State,Wisconsin,2015,Number,7091
+State,Wisconsin,2020,Number,7105
+State,Wisconsin,2009,Number,6785
+State,Wisconsin,2010,Number,6575
+State,Wisconsin,2011,Number,6547
+State,Wisconsin,2012,Number,6384
+State,Wisconsin,2014,Number,6918
+State,Wisconsin,2016,Number,7382
+State,Wisconsin,2017,Number,7721
+State,Wisconsin,2022,Number,6622
+State,Wisconsin,2024,Number,6051
+State,Wisconsin,2021,Number,6771
+State,Wisconsin,2023,Number,6297
+State,Wisconsin,2019,Number,7642
+State,Wyoming,2019,Number,994
+State,Wyoming,2023,Number,808
+State,Wyoming,2021,Number,836
+State,Wyoming,2024,Number,894
+State,Wyoming,2022,Number,756
+State,Wyoming,2017,Number,1085
+State,Wyoming,2016,Number,993
+State,Wyoming,2014,Number,985
+State,Wyoming,2012,Number,963
+State,Wyoming,2011,Number,886
+State,Wyoming,2010,Number,981
+State,Wyoming,2009,Number,1155
+State,Wyoming,2020,Number,815
+State,Wyoming,2015,Number,1082
+State,Wyoming,2018,Number,1091
+State,Wyoming,2013,Number,981
+State,Wyoming,2006,Number,1301
+State,Wyoming,2008,Number,1154
+State,Wyoming,2007,Number,1170
+State,Wyoming,2005,Number,1244
+State,Wyoming,2004,Number,1184
+State,Wyoming,2003,Number,1055
+State,Wyoming,2002,Number,929
+State,Wyoming,2001,Number,965
+State,Wyoming,2000,Number,815
+Territory,Puerto Rico,2000,Number,N.A.
+Territory,Puerto Rico,2001,Number,8476
+Territory,Puerto Rico,2002,Number,8179
+Territory,Puerto Rico,2003,Number,7585
+Territory,Puerto Rico,2004,Number,7663
+Territory,Puerto Rico,2005,Number,6786
+Territory,Puerto Rico,2007,Number,6330
+Territory,Puerto Rico,2008,Number,6185
+Territory,Puerto Rico,2006,Number,6661
+Territory,Puerto Rico,2013,Number,4197
+Territory,Puerto Rico,2018,Number,2231
+Territory,Puerto Rico,2015,Number,4189
+Territory,Puerto Rico,2020,Number,2259
+Territory,Puerto Rico,2009,Number,5351
+Territory,Puerto Rico,2010,Number,4476
+Territory,Puerto Rico,2011,Number,4363
+Territory,Puerto Rico,2012,Number,4310
+Territory,Puerto Rico,2014,Number,3696
+Territory,Puerto Rico,2016,Number,4264
+Territory,Puerto Rico,2017,Number,4539
+Territory,Puerto Rico,2022,Number,2136
+Territory,Puerto Rico,2024,Number,2355
+Territory,Puerto Rico,2019,Number,2752
+Territory,Puerto Rico,2021,Number,2135
+Territory,Puerto Rico,2023,Number,2456
+Territory,Virgin Islands,2011,Number,N.A.
