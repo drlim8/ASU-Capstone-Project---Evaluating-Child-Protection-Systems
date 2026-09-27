@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARA CPS Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>KARA CPS Dashboard</h1>
+        <p>CPS Metrics & Cross-State Comparison</p>
+    </header>
+
+    <main>
+
+        <section class="filters">
+            <div>
+                <label for="stateSelect">State</label>
+                <select id="stateSelect"></select>
+            </div>
+
+            <div>
+                <label for="yearSelect">Year</label>
+                <select id="yearSelect"></select>
+            </div>
+        </section>
+
+        <section class="metric-section">
+            <h2>Children in Foster Care</h2>
+
+            <div class="metric-card">
+                <h3 id="fosterCareNumber">Loading...</h3>
+                <p id="metricInfo"></p>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Foster Care Population Over Time</h2>
+
+            <p class="description">
+                This chart shows how the number of children in foster care
+                has changed over time for the selected state.
+            </p>
+
+            <canvas id="trendChart"></canvas>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>State Comparison</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Year</th>
+                        <th>Children in Foster Care</th>
+                    </tr>
+                </thead>
+
+                <tbody id="comparisonTable">
+                </tbody>
+            </table>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Data Information</h2>
+
+            <p><strong>Metric:</strong> Children in Foster Care</p>
+            <p><strong>Format:</strong> Number</p>
+
+            <h3>Notes and Limitations</h3>
+
+            <p>
+                Additional information about differences between states,
+                missing data, and reporting limitations will be added as
+                the evaluation methodology is developed.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>KARA State-by-State Child Protection System Evaluation</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
