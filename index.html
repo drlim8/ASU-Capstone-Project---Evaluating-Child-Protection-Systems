@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARA Child Protection Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>KARA Child Protection Data Dashboard</h1>
+    <p>Child protection data comparison and visualization</p>
+</header>
+
+<main>
+
+    <section class="filters">
+        <div>
+            <label for="scopeSelect">Scope</label>
+            <select id="scopeSelect"></select>
+        </div>
+
+        <div>
+            <label for="metricSelect">Metric</label>
+            <select id="metricSelect"></select>
+        </div>
+
+        <div>
+            <label for="yearSelect">Year</label>
+            <select id="yearSelect"></select>
+        </div>
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+            <h3>Current Value</h3>
+            <p id="currentValue">--</p>
+        </div>
+
+        <div class="card">
+            <h3>Data Confidence</h3>
+            <p id="confidence">--</p>
+        </div>
+
+        <div class="card">
+            <h3>Comparability</h3>
+            <p id="comparability">--</p>
+        </div>
+
+        <div class="card">
+            <h3>Data Availability</h3>
+            <p id="availability">--</p>
+        </div>
+
+    </section>
+
+    <section class="panel">
+        <h2 id="trendTitle">Metric Over Time</h2>
+        <div class="chart-container">
+            <canvas id="trendChart"></canvas>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2 id="comparisonTitle">Minnesota vs. National</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Scope</th>
+                    <th>Year</th>
+                    <th>Value</th>
+                    <th>Confidence</th>
+                    <th>Comparability</th>
+                </tr>
+            </thead>
+
+            <tbody id="comparisonTable"></tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <h2>Data Details</h2>
+
+        <div class="details-grid">
+            <div>
+                <strong>Field ID</strong>
+                <span id="fieldID">--</span>
+            </div>
+
+            <div>
+                <strong>Metric</strong>
+                <span id="fieldName">--</span>
+            </div>
+
+            <div>
+                <strong>Scope</strong>
+                <span id="detailScope">--</span>
+            </div>
+
+            <div>
+                <strong>Year</strong>
+                <span id="detailYear">--</span>
+            </div>
+
+            <div>
+                <strong>Original Value</strong>
+                <span id="originalValue">--</span>
+            </div>
+
+            <div>
+                <strong>Missing Label</strong>
+                <span id="missingLabel">--</span>
+            </div>
+        </div>
+
+        <div class="notes">
+            <h3>Notes and Limitations</h3>
+            <p id="notes">No notes available.</p>
+        </div>
+
+        <div class="source">
+            <a id="sourceLink" href="#" target="_blank">View Data Source</a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>KARA State-by-State Child Protection Systems Project</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
