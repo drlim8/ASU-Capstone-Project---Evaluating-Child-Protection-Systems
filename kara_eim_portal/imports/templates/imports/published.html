@@ -1,0 +1,15 @@
+{% extends "imports/base.html" %}
+{% block title %}Published data | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading compact"><div><p class="eyebrow">Approved versions</p><h1>Published data</h1><p>Each approved import remains traceable to its original workbook.</p></div></div>
+<section class="panel">
+  <div class="table-wrap"><table>
+    <thead><tr><th>Version</th><th>Jurisdiction</th><th>Framework</th><th>Records</th><th>Approved by</th><th>Approved</th></tr></thead>
+    <tbody>
+    {% for item in imports %}
+      <tr><td><a href="{% url 'imports:detail' item.pk %}">{{ item.title }}</a></td><td>{{ item.jurisdiction|default:"—" }}</td><td>{{ item.framework_version|default:"—" }}</td><td>{{ item.published_records.count }}</td><td>{{ item.reviewed_by.get_full_name|default:item.reviewed_by.username }}</td><td>{{ item.reviewed_at|date:"M j, Y g:i A" }}</td></tr>
+    {% empty %}<tr><td colspan="6">No dataset versions have been published.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}

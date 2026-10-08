@@ -1,0 +1,40 @@
+{% extends "imports/base.html" %}
+{% block title %}Upload workbook | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading compact">
+  <div><p class="eyebrow">New import</p><h1>Upload an EIM workbook</h1><p>The workbook is validated before any records can be published.</p></div>
+</div>
+
+<div class="two-column">
+  <section class="panel form-panel">
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="field-error">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</label>
+          {{ field }}
+          {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          {% for error in field.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+        </div>
+      {% endfor %}
+      <div class="form-actions">
+        <button class="button primary" type="submit">Upload and validate</button>
+        <a class="button secondary" href="{% url 'imports:dashboard' %}">Cancel</a>
+      </div>
+    </form>
+  </section>
+
+  <aside class="panel guidance">
+    <h2>Before uploading</h2>
+    <ol>
+      <li>Use the original <strong>.xlsx</strong> workbook.</li>
+      <li>Keep the standard sheet and column names.</li>
+      <li>Do not replace missing values with zero.</li>
+      <li>Confirm that sensitive personal information is excluded.</li>
+      <li>Keep the file under 25 MB.</li>
+    </ol>
+    <p class="callout">The portal preserves the original file and creates a separate staged copy for review.</p>
+  </aside>
+</div>
+{% endblock %}
