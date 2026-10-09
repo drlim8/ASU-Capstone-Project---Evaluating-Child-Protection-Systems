@@ -20,6 +20,7 @@
         <a href="{% url 'imports:dashboard' %}">Imports</a>
         <a href="{% url 'imports:upload' %}">Upload</a>
         <a href="{% url 'imports:published' %}">Published data</a>
+        <a href="{% url 'intake:home' %}">Intake</a>
         {% if user.is_staff %}<a href="/admin/">Administration</a>{% endif %}
       </nav>
       <form method="post" action="{% url 'logout' %}" class="logout-form">
