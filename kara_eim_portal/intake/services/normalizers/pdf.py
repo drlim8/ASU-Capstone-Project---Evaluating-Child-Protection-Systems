@@ -38,12 +38,21 @@ def _png(pil_image) -> bytes:
     return buf.getvalue()
 
 
+def _top_origin_bbox(page, pos) -> list[float]:
+    """Convert a pypdfium2 (left, bottom, right, top) box in PDF space to
+    pdfplumber's convention: [x0, top, x1, bottom] in points from the
+    top-left corner of the page (MediaBox)."""
+    mb_left, _mb_bottom, _mb_right, mb_top = page.get_mediabox()
+    left, bottom, right, top = (float(v) for v in pos)
+    return [left - mb_left, mb_top - top, right - mb_left, mb_top - bottom]
+
+
 def _extract_images(page, page_no: int, warnings: list[IntakeWarning]) -> list[ImageData]:
     images: list[ImageData] = []
     for obj in page.get_objects(filter=[pdfium_c.FPDF_PAGEOBJ_IMAGE]):
         try:
             pil = obj.get_bitmap().to_pil()
-            bbox = [float(v) for v in obj.get_pos()]
+            bbox = _top_origin_bbox(page, obj.get_pos())
             images.append(
                 ImageData(
                     index=len(images),

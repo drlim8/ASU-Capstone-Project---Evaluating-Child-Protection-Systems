@@ -43,6 +43,17 @@ class NormalizePdfTests(unittest.TestCase):
         self.assertEqual(img.ext, "png")
         self.assertTrue(img.content.startswith(b"\x89PNG"))
 
+    def test_table_and_image_bboxes_share_top_left_origin(self):
+        # Letter page is 792 pt tall. The factory table spans y=528..600 and the
+        # image y=500..650 in PDF (bottom-left) space; both must come back as
+        # [x0, top, x1, bottom] measured from the top-left corner.
+        table = normalize_pdf(self._write(factories.text_pdf())).pages[0].tables[0]
+        image = normalize_pdf(self._write(factories.pdf_with_image())).pages[0].images[0]
+        for got, want in ((table.bbox, [72, 192, 272, 264]), (image.bbox, [72, 142, 272, 292])):
+            self.assertEqual(len(got), 4)
+            for g, w in zip(got, want):
+                self.assertAlmostEqual(g, w, delta=1)
+
     def test_image_only_pdf_warns_no_text_layer(self):
         result = normalize_pdf(self._write(factories.image_only_pdf()))
         self.assertFalse(result.pages[0].has_text_layer)

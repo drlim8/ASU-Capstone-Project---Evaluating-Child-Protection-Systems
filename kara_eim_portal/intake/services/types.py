@@ -19,6 +19,7 @@ class IntakeWarning:
 class TableData:
     index: int
     rows: list[list[str | None]]
+    # PDF points, top-left origin: [x0, top, x1, bottom].
     bbox: list[float] | None = None
     header_guess: list[str | None] | None = None
 
@@ -30,6 +31,7 @@ class ImageData:
     ext: str
     width: int
     height: int
+    # PDF points, top-left origin: [x0, top, x1, bottom].
     bbox: list[float] | None = None
     src: str = ""
     alt: str = ""
