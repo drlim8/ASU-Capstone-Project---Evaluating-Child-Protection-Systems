@@ -17,6 +17,7 @@ from typing import BinaryIO
 from urllib.parse import urljoin, urlparse
 
 import requests
+import urllib3
 
 REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 CHUNK_SIZE = 64 * 1024
@@ -58,18 +59,29 @@ def _is_blocked_ip(ip) -> bool:
 
 def assert_public_url(url: str) -> None:
     """Raise BlockedURLError unless url is http(s) and every resolved address is public."""
-    parsed = urlparse(url)
+    if any(ch == "\\" or ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in url):
+        raise BlockedURLError("URL contains forbidden characters")
+    try:
+        parsed = urlparse(url)
+        host = parsed.hostname
+        port = parsed.port
+    except ValueError as exc:
+        raise BlockedURLError("Malformed URL") from exc
     if parsed.scheme not in ("http", "https"):
         raise BlockedURLError(f"Unsupported URL scheme: {parsed.scheme!r}")
-    host = parsed.hostname
     if not host:
         raise BlockedURLError("URL has no host")
+    # Parser-mismatch defence: urllib3 (used by requests) must agree on the host.
     try:
-        port = parsed.port
-    except ValueError:
-        raise BlockedURLError("URL has an invalid port")
+        other = urllib3.util.parse_url(url).host
+    except Exception as exc:
+        raise BlockedURLError("Malformed URL") from exc
+    if (other or "").strip("[]").lower() != host.lower():
+        raise BlockedURLError("URL host is ambiguous")
     try:
         infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except UnicodeError as exc:
+        raise BlockedURLError(f"Invalid host name {host!r}") from exc
     except socket.gaierror as exc:
         raise FetchError(f"Could not resolve host {host!r}", retryable=True) from exc
     if not infos:
@@ -97,6 +109,10 @@ def fetch_to_file(
     session = session or requests.Session()
     current = url
     for hop in range(max_redirects + 1):
+        try:
+            current = requests.Request("GET", current).prepare().url
+        except (requests.RequestException, ValueError) as exc:
+            raise BlockedURLError("Malformed URL") from exc
         assert_public_url(current)
         try:
             response = session.get(
@@ -119,7 +135,10 @@ def fetch_to_file(
                     raise FetchError("Redirect without Location header", http_status=status)
                 if hop >= max_redirects:
                     raise FetchError("Too many redirects", http_status=status)
-                current = urljoin(current, location)
+                try:
+                    current = urljoin(current, location)
+                except ValueError as exc:
+                    raise BlockedURLError("Malformed redirect URL") from exc
                 continue
             if status >= 500:
                 raise FetchError(f"Server error {status}", retryable=True, http_status=status)
@@ -148,6 +167,8 @@ def fetch_to_file(
                     dest.write(chunk)
             except (requests.ConnectionError, requests.Timeout, requests.exceptions.ChunkedEncodingError) as exc:
                 raise FetchError(f"Network error while downloading: {exc}", retryable=True) from exc
+            except requests.RequestException as exc:
+                raise FetchError(f"Download failed: {exc}", retryable=False) from exc
             return FetchResult(
                 final_url=current,
                 http_status=status,

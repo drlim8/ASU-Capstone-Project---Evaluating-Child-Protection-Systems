@@ -86,6 +86,19 @@ class AssertPublicUrlTests(TestCase):
         self.assertNotIsInstance(cm.exception, BlockedURLError)
         self.assertTrue(cm.exception.retryable)
 
+    def test_blocks_backslash_authority_confusion(self):
+        with patch("intake.services.fetch.socket.getaddrinfo", fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})):
+            for url in ("http://127.0.0.1\@a.gov/", "http://a.gov/ x", "http://a.gov/\x00"):
+                with self.assertRaises(BlockedURLError, msg=url):
+                    assert_public_url(url)
+
+    def test_malformed_and_unencodable_hosts_are_blocked(self):
+        with self.assertRaises(BlockedURLError):
+            assert_public_url("http://[::1/")
+        with patch("intake.services.fetch.socket.getaddrinfo", side_effect=UnicodeError):
+            with self.assertRaises(BlockedURLError):
+                assert_public_url("http://" + "a" * 70 + ".gov/")
+
     def test_allows_public(self):
         with patch("intake.services.fetch.socket.getaddrinfo", fake_getaddrinfo(PUBLIC)):
             assert_public_url("https://a.gov/")
@@ -129,6 +142,38 @@ class FetchTests(TestCase):
         self.session.get.side_effect = [resp(302, {"Location": "file:///etc/passwd"})]
         with self.assertRaises(BlockedURLError):
             run(self.session)
+
+    def test_backslash_url_direct_never_requests(self, gai):
+        gai.side_effect = fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})
+        with self.assertRaises(BlockedURLError):
+            run(self.session, url="http://127.0.0.1\@a.gov/")
+        self.session.get.assert_not_called()
+
+    def test_backslash_url_in_location_blocked(self, gai):
+        gai.side_effect = fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})
+        self.session.get.side_effect = [resp(302, {"Location": "http://127.0.0.1\@a.gov/"})]
+        with self.assertRaises(BlockedURLError):
+            run(self.session)
+        self.assertEqual(self.session.get.call_count, 1)
+
+    def test_malformed_urls_raise_blocked(self, gai):
+        gai.side_effect = fake_getaddrinfo(PUBLIC)
+        for url in ("http://[::1/", "nohost", "http://"):
+            with self.assertRaises(BlockedURLError, msg=url):
+                run(self.session, url=url)
+        self.session.get.side_effect = [resp(302, {"Location": "http://[::1/"})]
+        with self.assertRaises(BlockedURLError):
+            run(self.session)
+
+    def test_content_decoding_error_is_non_retryable_fetch_error(self, gai):
+        gai.side_effect = fake_getaddrinfo(PUBLIC)
+        r = resp(200)
+        r.iter_content = Mock(side_effect=requests.exceptions.ContentDecodingError("bad"))
+        self.session.get.side_effect = [r]
+        with self.assertRaises(FetchError) as cm:
+            run(self.session)
+        self.assertFalse(cm.exception.retryable)
+        r.close.assert_called()
 
     def test_redirect_without_location_fails(self, gai):
         gai.side_effect = fake_getaddrinfo(PUBLIC)
