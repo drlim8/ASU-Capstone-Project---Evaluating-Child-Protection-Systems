@@ -4,3 +4,7 @@ kara_eim_portal/db.sqlite3
 kara_eim_portal/media/
 .vs/
 .venv/
+
+# KARA source data - keep local, do not commit
+*.xlsx
+!kara_eim_portal/**/tests/**/*.xlsx
