@@ -213,6 +213,30 @@ class FetchTests(TestCase):
         r.iter_content.assert_not_called()
         r.close.assert_called()
 
+    def test_bot_challenge_is_rejected_with_clear_message(self, gai):
+        gai.side_effect = fake_getaddrinfo(PUBLIC)
+        for status, headers in [
+            (202, {"x-amzn-waf-action": "challenge", "Content-Type": "text/html"}),
+            (200, {"cf-mitigated": "challenge"}),
+            (202, {}),
+        ]:
+            r = resp(status, headers, chunks=[])
+            self.session.get.side_effect = [r]
+            with self.assertRaises(FetchError) as cm:
+                run(self.session)
+            self.assertFalse(cm.exception.retryable)
+            self.assertEqual(cm.exception.http_status, status)
+            self.assertIn("blocked the automated download", str(cm.exception))
+            r.iter_content.assert_not_called()
+
+    def test_empty_response_body_fails(self, gai):
+        gai.side_effect = fake_getaddrinfo(PUBLIC)
+        self.session.get.side_effect = [resp(200, {"Content-Type": "text/html"}, chunks=[])]
+        with self.assertRaises(FetchError) as cm:
+            run(self.session)
+        self.assertFalse(cm.exception.retryable)
+        self.assertIn("empty response", str(cm.exception))
+
     def test_4xx_not_retryable_5xx_retryable(self, gai):
         gai.side_effect = fake_getaddrinfo(PUBLIC)
         self.session.get.side_effect = [resp(404)]

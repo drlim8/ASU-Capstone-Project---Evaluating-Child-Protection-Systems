@@ -21,6 +21,21 @@ import urllib3
 
 REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 CHUNK_SIZE = 64 * 1024
+# Bot-protection services answer automated clients with a challenge page instead of content.
+CHALLENGE_HEADERS = {"x-amzn-waf-action": "challenge", "cf-mitigated": "challenge"}
+BOT_BLOCKED_MESSAGE = (
+    "This site blocked the automated download (bot protection). "
+    "Open the link in your browser, save the PDF or page, and upload it instead."
+)
+EMPTY_RESPONSE_MESSAGE = "The server returned an empty response."
+
+
+def _is_bot_challenge(status: int, headers) -> bool:
+    lowered = {str(k).lower(): str(v).lower() for k, v in headers.items()}
+    if any(lowered.get(name) == value for name, value in CHALLENGE_HEADERS.items()):
+        return True
+    # 202 Accepted means "not ready yet" — never a finished document.
+    return status == 202
 
 
 class FetchError(Exception):
@@ -144,6 +159,8 @@ def fetch_to_file(
                 raise FetchError(f"Server error {status}", retryable=True, http_status=status)
             if status >= 300:
                 raise FetchError(f"HTTP {status}", retryable=False, http_status=status)
+            if _is_bot_challenge(status, response.headers):
+                raise FetchError(BOT_BLOCKED_MESSAGE, http_status=status)
 
             content_length = response.headers.get("Content-Length")
             if content_length is not None:
@@ -169,6 +186,8 @@ def fetch_to_file(
                 raise FetchError(f"Network error while downloading: {exc}", retryable=True) from exc
             except requests.RequestException as exc:
                 raise FetchError(f"Download failed: {exc}", retryable=False) from exc
+            if written == 0:
+                raise FetchError(EMPTY_RESPONSE_MESSAGE, http_status=status)
             return FetchResult(
                 final_url=current,
                 http_status=status,
