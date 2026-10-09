@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "imports",
+    "intake",
 ]
 
 MIDDLEWARE = [
@@ -89,3 +90,9 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 
+
+INTAKE_MAX_BYTES = int(os.getenv("INTAKE_MAX_BYTES", str(50 * 1024 * 1024)))
+INTAKE_FETCH_TIMEOUT = int(os.getenv("INTAKE_FETCH_TIMEOUT", "30"))
+INTAKE_HOST_DELAY = float(os.getenv("INTAKE_HOST_DELAY", "2.0"))
+INTAKE_USER_AGENT = os.getenv("INTAKE_USER_AGENT", "KARA-EIM-Intake/1.0")
+INTAKE_MAX_ITEMS_PER_BATCH = int(os.getenv("INTAKE_MAX_ITEMS_PER_BATCH", "100"))
