@@ -23,6 +23,9 @@ from intake.services.types import (
 )
 
 MAX_IMAGES = 100
+MAX_COLSPAN = 1000
+MAX_ROWSPAN = 65534
+MAX_TABLE_CELLS = 100_000
 JS_TEXT_THRESHOLD = 200
 LINK_EXTENSIONS = (".pdf", ".xlsx", ".xls")
 REMOVE_TAGS = ("script", "style", "nav", "header", "footer", "noscript")
@@ -34,32 +37,47 @@ def _cell_text(cell) -> str | None:
     return text or None
 
 
-def _span(cell, attr: str) -> int:
+def _span(cell, attr: str, limit: int) -> tuple[int, bool]:
+    """Return (span clamped to 1..limit, whether it was clamped down)."""
     try:
-        return max(1, int(str(cell.get(attr, 1)).strip()))
+        raw = int(str(cell.get(attr, 1)).strip())
     except ValueError:
-        return 1
+        return 1, False
+    return min(limit, max(1, raw)), raw > limit
 
 
-def _table_rows(table) -> list[list[str | None]]:
-    """Expand colspan/rowspan into a rectangular grid."""
+def _table_rows(table) -> tuple[list[list[str | None]], bool]:
+    """Expand colspan/rowspan into a rectangular grid. Returns (rows, truncated)."""
     grid: dict[tuple[int, int], str | None] = {}
+    truncated = stop = False
     trs = [tr for tr in table.find_all("tr") if tr.find_parent("table") is table]
     for r, tr in enumerate(trs):
         c = 0
         for cell in tr.find_all(["td", "th"], recursive=False):
             while (r, c) in grid:
                 c += 1
+            rs, rs_clamped = _span(cell, "rowspan", MAX_ROWSPAN)
+            cs, cs_clamped = _span(cell, "colspan", MAX_COLSPAN)
+            truncated = truncated or rs_clamped or cs_clamped
+            if len(grid) + rs * cs > MAX_TABLE_CELLS:
+                truncated = True
+                stop = True
+                break
             value = _cell_text(cell)
-            for dr in range(_span(cell, "rowspan")):
-                for dc in range(_span(cell, "colspan")):
+            for dr in range(rs):
+                for dc in range(cs):
                     grid[(r + dr, c + dc)] = value
-            c += _span(cell, "colspan")
+            c += cs
+        if stop:
+            break
     if not grid:
-        return []
+        return [], truncated
     height = max(r for r, _ in grid) + 1
     width = max(c for _, c in grid) + 1
-    return [[grid.get((r, c)) for c in range(width)] for r in range(height)]
+    if height * width > MAX_TABLE_CELLS:
+        truncated = True
+        height = max(1, MAX_TABLE_CELLS // width)
+    return [[grid.get((r, c)) for c in range(width)] for r in range(height)], truncated
 
 
 def _decode_data_uri(uri: str) -> bytes:
@@ -99,9 +117,16 @@ def _extract_images(soup, base_url, fetch_image, warnings) -> list[ImageData]:
         src = (tag.get("src") or "").strip()
         if not src:
             continue
-        resolved = src if src.lower().startswith("data:") else urljoin(base_url, src)
-        is_data = resolved.lower().startswith("data:")
-        if not is_data and urlsplit(resolved).scheme not in ("http", "https"):
+        try:
+            resolved = src if src.lower().startswith("data:") else urljoin(base_url, src)
+            is_data = resolved.lower().startswith("data:")
+            scheme = "" if is_data else urlsplit(resolved).scheme
+        except ValueError:
+            warnings.append(
+                IntakeWarning("image_unreadable", f"Image {src} has an invalid address and was skipped.", page=1)
+            )
+            continue
+        if not is_data and scheme not in ("http", "https"):
             continue
         if seen >= MAX_IMAGES:
             warnings.append(
@@ -145,8 +170,11 @@ def _extract_links(soup, base_url) -> list[LinkData]:
         href = a["href"].strip()
         if href.startswith("#"):
             continue
-        url = urljoin(base_url, href)
-        parts = urlsplit(url)
+        try:
+            url = urljoin(base_url, href)
+            parts = urlsplit(url)
+        except ValueError:
+            continue
         if parts.scheme not in ("http", "https"):
             continue
         label = " ".join(a.get_text(" ").split())
@@ -168,7 +196,15 @@ def normalize_html(
 
     tables = []
     for table in soup.find_all("table"):
-        rows = _table_rows(table)
+        rows, truncated = _table_rows(table)
+        if truncated:
+            warnings.append(
+                IntakeWarning(
+                    "table_too_large",
+                    "A table on this page is too large and was truncated.",
+                    page=1,
+                )
+            )
         if rows:
             tables.append(TableData(index=len(tables), rows=rows, header_guess=list(rows[0])))
     images = _extract_images(soup, base_url, fetch_image, warnings)

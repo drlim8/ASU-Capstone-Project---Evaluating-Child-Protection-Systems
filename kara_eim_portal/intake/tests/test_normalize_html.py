@@ -135,3 +135,32 @@ class NormalizeHtmlTests(unittest.TestCase):
         w = [x for x in result.warnings if x.code == "js_rendered"]
         self.assertEqual(len(w), 1)
         self.assertIn("consider uploading the PDF instead", w[0].message)
+
+    def test_huge_colspan_is_clamped_with_warning(self):
+        import time
+
+        html = b'<table><tr><td colspan="1000000000">A</td><td>B</td></tr></table>'
+        start = time.monotonic()
+        result, _ = self._run(html)
+        self.assertLess(time.monotonic() - start, 5)
+        self.assertIn("table_too_large", [w.code for w in result.warnings])
+        self.assertLessEqual(len(result.pages[0].tables[0].rows[0]), 1001)
+
+    def test_huge_rowspan_is_clamped_with_warning(self):
+        import time
+
+        html = b'<table><tr><td rowspan="1000000000">A</td></tr><tr><td colspan="9999">B</td></tr></table>'
+        start = time.monotonic()
+        result, _ = self._run(html)
+        self.assertLess(time.monotonic() - start, 5)
+        self.assertIn("table_too_large", [w.code for w in result.warnings])
+
+    def test_malformed_urls_do_not_abort(self):
+        html = (
+            b'<p>Some text</p><img src="http://[::1/x.png"><a href="http://[::1/a.pdf">bad</a>'
+            b'<a href="/ok.pdf">ok</a>'
+        )
+        result, fetch = self._run(html)
+        fetch.assert_not_called()
+        self.assertEqual([w.code for w in result.warnings], ["image_unreadable"])
+        self.assertEqual([l.url for l in result.links], ["https://dhs.state.mn.us/ok.pdf"])
