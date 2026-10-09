@@ -21,7 +21,7 @@
       <tbody>
       {% for doc in documents %}
         <tr data-doc-id="{{ doc.pk }}">
-          <td>{{ doc.original_filename|default:doc.source_url|default:"Document" }}
+          <td><a href="{% url 'intake:document_detail' doc.pk %}">{{ doc.original_filename|default:doc.source_url|default:"Document" }}</a>
             {% if doc.error %}<small class="error-text">{{ doc.error }}</small>{% endif %}
           </td>
           <td>{{ doc.get_kind_display }}</td>

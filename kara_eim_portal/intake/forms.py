@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
 
+from .models import SourceDocument
 from .services.batches import parse_urls
 from .services.detect import VALID_TYPES_MESSAGE
 
@@ -72,3 +73,17 @@ class IntakeBatchForm(forms.Form):
                 mb = settings.INTAKE_MAX_BYTES // (1024 * 1024)
                 self.add_error("files", f"{name}: files must be {mb} MB or smaller.")
         return cleaned
+
+
+class DocumentMetaForm(forms.ModelForm):
+    year_hint = forms.IntegerField(
+        required=False,
+        min_value=1990,
+        max_value=2100,
+        label="Year hint",
+        widget=forms.NumberInput(attrs={"min": 1990, "max": 2100}),
+    )
+
+    class Meta:
+        model = SourceDocument
+        fields = ["scope", "year_hint"]

@@ -1,0 +1,126 @@
+{% extends "imports/base.html" %}
+{% block title %}{{ document }} | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Document #{{ document.pk }} · <a href="{% url 'intake:batch_detail' document.batch_id %}">{{ document.batch.title }}</a></p>
+    <h1>{{ document }}</h1>
+    <p>{{ document.get_kind_display }} · {{ document.get_origin_display }}</p>
+  </div>
+  <span class="status large status-{{ document.status }}">{{ document.get_status_display }}</span>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Details</h2></div>
+  <dl>
+    {% if document.original_filename %}<dt>Original file</dt><dd>{{ document.original_filename }}{% if document.stored_file %} · <a href="{% url 'intake:document_original' document.pk %}">Download original</a>{% endif %}</dd>{% endif %}
+    {% if document.source_url %}<dt>Source URL</dt><dd>{{ document.source_url }} · <a href="{{ document.source_url }}" rel="noopener noreferrer" target="_blank">Open</a></dd>{% endif %}
+    {% if document.final_url and document.final_url != document.source_url %}<dt>Final URL</dt><dd>{{ document.final_url }} · <a href="{{ document.final_url }}" rel="noopener noreferrer" target="_blank">Open</a></dd>{% endif %}
+    {% if document.parent %}<dt>Found in</dt><dd><a href="{% url 'intake:document_detail' document.parent.pk %}">{{ document.parent }}</a></dd>{% endif %}
+    {% if document.duplicate_of %}<dt>Duplicate of</dt><dd><a href="{% url 'intake:document_detail' document.duplicate_of.pk %}">{{ document.duplicate_of }}</a></dd>{% endif %}
+    {% if document.content_type %}<dt>Content type</dt><dd>{{ document.content_type }}</dd>{% endif %}
+    {% if document.size_bytes is not None %}<dt>Size</dt><dd>{{ document.size_bytes|filesizeformat }}</dd>{% endif %}
+    {% if document.http_status %}<dt>HTTP status</dt><dd>{{ document.http_status }}</dd>{% endif %}
+    {% if document.sha256 %}<dt>SHA-256</dt><dd><code>{{ document.sha256 }}</code></dd>{% endif %}
+    {% if document.fetched_at %}<dt>Fetched</dt><dd>{{ document.fetched_at|date:"M j, Y g:i A" }}</dd>{% endif %}
+  </dl>
+  {% if document.error %}<p class="error-text">{{ document.error }}</p>{% endif %}
+  {% if warnings %}
+  <h3 class="result-title">Warnings</h3>
+  <ul class="issue-list warning-list">
+    {% for w in warnings %}
+    <li><strong>{{ w.code }}</strong><span>{{ w.message }}{% if w.page %} (page {{ w.page }}){% endif %}</span></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+
+<section class="panel form-panel">
+  <div class="panel-heading"><h2>Metadata</h2></div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="field-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+      </div>
+    {% endfor %}
+    {% if perms.intake.add_intakebatch %}
+    <div class="form-actions"><button class="button primary" type="submit">Save</button></div>
+    {% endif %}
+  </form>
+</section>
+
+{% if links %}
+<section class="panel">
+  <div class="panel-heading"><h2>Links found in this document</h2></div>
+  <form method="post" action="{% url 'intake:document_queue_links' document.pk %}">
+    {% csrf_token %}
+    <ul class="link-checklist">
+      {% for link in links %}
+      <li>
+        <label>
+          <input type="checkbox" name="link_ids" value="{{ link.pk }}"{% if link.queued_as_id %} disabled{% endif %}>
+          {{ link.label|default:link.url }}
+        </label>
+        <small>{{ link.url }}</small>
+        {% if link.context %}<small>{{ link.context }}</small>{% endif %}
+        {% if link.queued_as_id %}<a href="{% url 'intake:document_detail' link.queued_as_id %}">Queued (view)</a>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% if perms.intake.add_intakebatch %}
+    <div class="form-actions"><button class="button secondary" type="submit">Queue selected links</button></div>
+    {% endif %}
+  </form>
+</section>
+{% endif %}
+
+<section class="panel">
+  <div class="panel-heading"><h2>Pages ({{ pages|length }})</h2></div>
+  {% for page in pages %}
+  <article class="doc-page" id="page-{{ page.number }}">
+    <h3>Page {{ page.number }}{% if page.label %} · {{ page.label }}{% endif %}</h3>
+    {% if not page.has_text_layer %}<p class="warning-text">No text layer found on this page.</p>{% endif %}
+    {% if page.preview_image %}<img src="{{ page.preview_image.url }}" alt="Page {{ page.number }} preview" loading="lazy" style="max-width:100%">{% endif %}
+    {% if page.text %}
+    <details><summary>Page text</summary><pre style="white-space:pre-wrap">{{ page.text }}</pre></details>
+    {% endif %}
+    {% for table in page.tables.all %}
+    <h4>Table {{ table.index|add:1 }}</h4>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+        {% for row in table.rows %}
+          <tr>{% for cell in row %}<td>{{ cell|default_if_none:"" }}</td>{% endfor %}</tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+    {% if page.content_images %}
+    <div class="image-thumbs">
+      {% for image in page.content_images %}
+      <figure>
+        <img src="{{ image.file.url }}" alt="{% if image.alt %}{{ image.alt }}{% else %}Page {{ page.number }} image {{ image.index }}{% endif %}" loading="lazy" style="max-width:200px">
+        {% if image.caption %}<figcaption>{{ image.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if page.decorative_images %}
+    <details>
+      <summary>Show {{ page.decorative_images|length }} small/decorative images</summary>
+      {% for image in page.decorative_images %}
+      <img src="{{ image.file.url }}" alt="{% if image.alt %}{{ image.alt }}{% else %}Page {{ page.number }} image {{ image.index }}{% endif %}" loading="lazy">
+      {% endfor %}
+    </details>
+    {% endif %}
+  </article>
+  {% empty %}
+  <div class="empty-state"><h3>No pages</h3><p>This document has no normalized pages.</p></div>
+  {% endfor %}
+</section>
+{% endblock %}

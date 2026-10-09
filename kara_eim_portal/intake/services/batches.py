@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
 
-from intake.models import IntakeBatch, IntakeEvent, ProcessingJob, SourceDocument
+from intake.models import CandidateLink, IntakeBatch, IntakeEvent, ProcessingJob, SourceDocument
 
 Status = SourceDocument.Status
 
@@ -112,3 +112,41 @@ def remove_document(document: SourceDocument, actor) -> None:
     document.delete()
     # document=None: the event must outlive the deleted document.
     IntakeEvent.objects.create(batch=batch, actor=actor, action="removed", details=details)
+
+
+@transaction.atomic
+def queue_links(document: SourceDocument, link_ids: list[int], actor) -> list[SourceDocument]:
+    """Turn selected, not-yet-queued candidate links of ``document`` into child documents."""
+    links = list(
+        CandidateLink.objects.select_for_update()
+        .filter(pk__in=link_ids, document=document, queued_as__isnull=True)
+        .order_by("id")
+    )
+    origin = (
+        SourceDocument.Origin.FROM_WORKBOOK
+        if document.kind == SourceDocument.Kind.XLSX
+        else SourceDocument.Origin.FROM_PAGE
+    )
+    children = []
+    for link in links:
+        child = SourceDocument.objects.create(
+            batch=document.batch,
+            parent=document,
+            origin=origin,
+            source_url=link.url,
+            scope=document.scope,
+            status=Status.QUEUED,
+        )
+        _queue(child)
+        link.queued_as = child
+        link.save(update_fields=["queued_as"])
+        children.append(child)
+    if children:
+        IntakeEvent.objects.create(
+            batch=document.batch,
+            document=document,
+            actor=actor,
+            action="links_queued",
+            details={"children": [c.pk for c in children]},
+        )
+    return children

@@ -1,11 +1,14 @@
+import os
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Q
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import FileResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .forms import IntakeBatchForm
+from .forms import DocumentMetaForm, IntakeBatchForm
 from .models import IntakeBatch, SourceDocument
 from .services import batches as batch_service
 
@@ -140,3 +143,74 @@ def document_remove(request, pk):
         return HttpResponseBadRequest(str(exc))
     messages.success(request, "The document was removed from the batch.")
     return redirect("intake:batch_detail", pk=batch_id)
+
+
+def _int_ids(values):
+    ids = []
+    for value in values:
+        try:
+            ids.append(int(value))
+        except (TypeError, ValueError):
+            continue
+    return ids
+
+
+@login_required
+@view_perm
+def document_detail(request, pk):
+    document = get_object_or_404(
+        SourceDocument.objects.select_related("batch", "parent", "duplicate_of"), pk=pk
+    )
+    if request.method == "POST":
+        if not request.user.has_perm("intake.add_intakebatch"):
+            raise PermissionDenied
+        form = DocumentMetaForm(request.POST, instance=document)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Document details saved.")
+            return redirect("intake:document_detail", pk=document.pk)
+    else:
+        form = DocumentMetaForm(instance=document)
+    pages = list(document.pages.prefetch_related("tables", "images"))
+    for page in pages:
+        images = list(page.images.all())
+        page.content_images = [i for i in images if not i.decorative]
+        page.decorative_images = [i for i in images if i.decorative]
+    return render(
+        request,
+        "intake/document_detail.html",
+        {
+            "document": document,
+            "form": form,
+            "pages": pages,
+            "links": list(document.candidate_links.select_related("queued_as")),
+            "warnings": document.warnings or [],
+        },
+    )
+
+
+@login_required
+@add_perm
+@require_POST
+def document_queue_links(request, pk):
+    document = get_object_or_404(SourceDocument.objects.select_related("batch"), pk=pk)
+    children = batch_service.queue_links(document, _int_ids(request.POST.getlist("link_ids")), request.user)
+    if children:
+        messages.success(request, f"{len(children)} link(s) queued for processing.")
+    else:
+        messages.info(request, "No new links were queued.")
+    return redirect("intake:document_detail", pk=document.pk)
+
+
+@login_required
+@view_perm
+def document_original(request, pk):
+    document = get_object_or_404(SourceDocument, pk=pk)
+    if not document.stored_file:
+        raise Http404("No stored file for this document.")
+    try:
+        handle = document.stored_file.open("rb")
+    except FileNotFoundError:
+        raise Http404("The stored file is missing.")
+    name = document.original_filename or os.path.basename(document.stored_file.name)
+    return FileResponse(handle, as_attachment=True, filename=name)
