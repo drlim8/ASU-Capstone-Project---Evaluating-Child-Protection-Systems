@@ -8,7 +8,7 @@ from django.core.management import call_command
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from intake.models import IntakeBatch, ProcessingJob, SourceDocument
+from intake.models import IntakeBatch, IntakeEvent, ProcessingJob, SourceDocument
 from intake.services.fetch import FetchError, HostThrottle
 from intake.services.worker import claim_next_job, run_job, run_once
 
@@ -86,6 +86,56 @@ class WorkerTests(WorkerTestBase):
         self.assertEqual(claimed.state, ProcessingJob.State.RUNNING)
         self.assertEqual(claimed.locked_at, now)
         self.assertIsNone(claim_next_job(now))
+
+    def test_stale_owner_cannot_overwrite_new_owner(self, process_mock):
+        t0 = timezone.now() - timedelta(minutes=30)
+        job = self.make_job(run_after=t0 - timedelta(seconds=1))
+        original = claim_next_job(t0)
+        new_owner = claim_next_job(t0 + timedelta(minutes=11))  # original looked stale
+        self.assertEqual(new_owner.pk, original.pk)
+        SourceDocument.objects.filter(pk=job.document_id).update(status=SourceDocument.Status.NORMALIZING)
+
+        outcomes = [
+            FetchError("Server error 503", retryable=True, http_status=503),  # would reschedule
+            IndexError("boom"),  # would give up
+            None,  # would mark done
+        ]
+        for outcome in outcomes:
+            process_mock.side_effect = outcome
+            with self.assertLogs("intake.services.worker", level="WARNING"):
+                run_job(original, self.throttle)
+            job.refresh_from_db()
+            self.assertEqual(job.state, ProcessingJob.State.RUNNING)
+            self.assertEqual(job.locked_at, new_owner.locked_at)
+            self.assertEqual(job.attempts, 2)
+            job.document.refresh_from_db()
+            self.assertEqual(job.document.status, SourceDocument.Status.NORMALIZING)
+            self.assertFalse(IntakeEvent.objects.filter(action="failed").exists())
+
+        process_mock.side_effect = None
+        run_job(new_owner, self.throttle)
+        job.refresh_from_db()
+        self.assertEqual(job.state, ProcessingJob.State.DONE)
+
+    def test_stale_job_at_max_attempts_gives_up_instead_of_rerunning(self, process_mock):
+        now = timezone.now()
+        job = self.make_job(state=ProcessingJob.State.RUNNING, locked_at=now - timedelta(minutes=11), attempts=3)
+        self.assertIsNone(claim_next_job(now))
+        process_mock.assert_not_called()
+        job.refresh_from_db()
+        self.assertEqual(job.state, ProcessingJob.State.GAVE_UP)
+        self.assertEqual(job.attempts, 3)
+        job.document.refresh_from_db()
+        self.assertEqual(job.document.status, SourceDocument.Status.FAILED)
+        self.assertEqual(job.document.error, "Processing did not finish after 3 attempts.")
+        self.assertTrue(IntakeEvent.objects.filter(document=job.document, action="failed").exists())
+
+    def test_stale_job_below_max_attempts_is_reclaimed(self, process_mock):
+        now = timezone.now()
+        job = self.make_job(state=ProcessingJob.State.RUNNING, locked_at=now - timedelta(minutes=11), attempts=2)
+        claimed = claim_next_job(now)
+        self.assertEqual(claimed.pk, job.pk)
+        self.assertEqual(claimed.attempts, 3)
 
     def test_document_deleted_mid_job_does_not_crash(self, process_mock):
         self.make_job()

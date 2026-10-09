@@ -37,7 +37,7 @@ def claim_next_job(now: datetime | None = None) -> ProcessingJob | None:
     candidates = list(
         ProcessingJob.objects.filter(eligible)
         .order_by("run_after", "id")
-        .values("pk", "state", "locked_at")[:CLAIM_CANDIDATES]
+        .values("pk", "state", "locked_at", "attempts", "document_id")[:CLAIM_CANDIDATES]
     )
     for seen in candidates:
         query = ProcessingJob.objects.filter(pk=seen["pk"], state=seen["state"])
@@ -45,6 +45,12 @@ def claim_next_job(now: datetime | None = None) -> ProcessingJob | None:
             query = query.filter(locked_at__isnull=True)
         else:
             query = query.filter(locked_at=seen["locked_at"])
+        if seen["state"] == State.RUNNING and seen["attempts"] >= MAX_ATTEMPTS:
+            # The worker keeps dying mid-job (e.g. out of memory): stop retrying.
+            message = f"Processing did not finish after {seen['attempts']} attempts."
+            if query.update(state=State.GAVE_UP, locked_at=None, last_error=message) == 1:
+                _fail_document(seen["document_id"], message)
+            continue
         if query.update(state=State.RUNNING, locked_at=now, attempts=F("attempts") + 1) != 1:
             continue  # another worker won the race
         try:
@@ -54,21 +60,30 @@ def claim_next_job(now: datetime | None = None) -> ProcessingJob | None:
     return None
 
 
-def _update_job(job: ProcessingJob, **fields) -> None:
-    # .update() rather than .save(): never re-insert a job row that was deleted mid-run.
-    ProcessingJob.objects.filter(pk=job.pk).update(**fields)
+def _update_job(job: ProcessingJob, **fields) -> bool:
+    """Finish/reschedule a job we still own; returns False if the lock was lost.
+
+    ``locked_at`` (set at claim) is the fencing token: if the job was reclaimed
+    as stale by another worker, it no longer matches and nothing is written.
+    .update() rather than .save() also never re-inserts a job deleted mid-run.
+    """
+    owned = ProcessingJob.objects.filter(pk=job.pk, state=State.RUNNING, locked_at=job.locked_at)
+    if owned.update(**fields) != 1:
+        logger.warning("Intake job %s lost its lock (reclaimed or deleted); result discarded", job.pk)
+        return False
     for name, value in fields.items():
         setattr(job, name, value)
+    return True
 
 
-def _fail_document(job: ProcessingJob, message: str) -> None:
-    updated = SourceDocument.objects.filter(pk=job.document_id).update(
+def _fail_document(document_id: int, message: str) -> None:
+    updated = SourceDocument.objects.filter(pk=document_id).update(
         status=SourceDocument.Status.FAILED, error=message, updated_at=timezone.now()
     )
     if updated:
-        batch_id = SourceDocument.objects.filter(pk=job.document_id).values_list("batch_id", flat=True).first()
+        batch_id = SourceDocument.objects.filter(pk=document_id).values_list("batch_id", flat=True).first()
         IntakeEvent.objects.create(
-            batch_id=batch_id, document_id=job.document_id, action="failed", details={"error": message}
+            batch_id=batch_id, document_id=document_id, action="failed", details={"error": message}
         )
 
 
@@ -84,28 +99,29 @@ def run_job(job: ProcessingJob, throttle: HostThrottle) -> None:
         if not SourceDocument.objects.filter(pk=job.document_id).exists():
             return  # document (and job) deleted while processing
         if isinstance(exc, FetchError) and exc.retryable:
-            if job.attempts < MAX_ATTEMPTS:
-                _update_job(
+            attempts = job.attempts
+            if attempts < MAX_ATTEMPTS:
+                if _update_job(
                     job,
                     state=State.PENDING,
-                    run_after=timezone.now() + _backoff(job.attempts),
+                    run_after=timezone.now() + _backoff(attempts),
                     locked_at=None,
                     last_error=str(exc),
-                )
-                SourceDocument.objects.filter(pk=job.document_id).update(
-                    status=SourceDocument.Status.QUEUED, updated_at=timezone.now()
-                )
+                ):
+                    SourceDocument.objects.filter(pk=job.document_id).update(
+                        status=SourceDocument.Status.QUEUED, updated_at=timezone.now()
+                    )
                 return
-            _update_job(job, state=State.GAVE_UP, last_error=str(exc))
-            _fail_document(job, f"{exc} (gave up after {job.attempts} attempts)")
+            if _update_job(job, state=State.GAVE_UP, last_error=str(exc)):
+                _fail_document(job.document_id, f"{exc} (gave up after {attempts} attempts)")
             return
         if isinstance(exc, FetchError):
             message = str(exc)
         else:
             logger.exception("Unexpected error processing intake document %s", job.document_id)
             message = f"Processing failed unexpectedly ({type(exc).__name__}: {exc})"
-        _update_job(job, state=State.GAVE_UP, last_error=traceback.format_exc())
-        _fail_document(job, message)
+        if _update_job(job, state=State.GAVE_UP, last_error=traceback.format_exc()):
+            _fail_document(job.document_id, message)
         return
 
     _update_job(job, state=State.DONE, last_error="")
