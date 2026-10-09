@@ -67,6 +67,28 @@ Open <http://127.0.0.1:8000/>.
 
 The included `.vscode/launch.json` also provides a **Run KARA data portal** debug configuration after the environment is installed.
 
+## Intake worker
+
+The batch intake screens (`/intake/`) queue each PDF, workbook, or URL as a job. A separate worker process must be running to fetch and normalize them. Start it in a second terminal, in addition to `runserver`.
+
+### macOS or Linux
+
+```bash
+source .venv/bin/activate
+python manage.py run_intake_worker
+```
+
+### Windows PowerShell
+
+```powershell
+.venv\Scripts\Activate.ps1
+python manage.py run_intake_worker
+```
+
+Run only one worker at a time when using SQLite; several writers will cause "database is locked" errors. Use `--once` to process the queued jobs and exit. With Docker, `docker compose up` starts the `worker` service alongside `web`.
+
+To run the tests, install the development dependencies first: `pip install -r requirements-dev.txt`, then `python manage.py test`.
+
 ## Create a safe demo workbook
 
 Do not commit the real EIM workbook to GitHub. Generate a small synthetic workbook for demonstrations:

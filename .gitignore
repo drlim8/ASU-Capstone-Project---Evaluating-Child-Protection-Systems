@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+kara_eim_portal/db.sqlite3
+kara_eim_portal/media/
+.vs/
+.venv/

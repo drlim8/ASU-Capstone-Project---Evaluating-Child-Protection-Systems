@@ -34,6 +34,25 @@ services:
       db:
         condition: service_healthy
 
+  worker:
+    build: .
+    command: python manage.py run_intake_worker
+    environment:
+      DJANGO_SECRET_KEY: local-docker-key-change-before-deployment
+      DJANGO_DEBUG: "1"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+      POSTGRES_DB: kara
+      POSTGRES_USER: kara
+      POSTGRES_PASSWORD: kara-local-only
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    volumes:
+      - .:/app
+      - uploaded_files:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   uploaded_files:
