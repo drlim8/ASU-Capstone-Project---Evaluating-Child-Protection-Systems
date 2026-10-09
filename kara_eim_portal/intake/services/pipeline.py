@@ -11,7 +11,7 @@ from django.core.files import File
 from django.db import transaction
 from django.utils import timezone
 
-from intake.models import IntakeEvent, SourceDocument
+from intake.models import HTML_SNAPSHOT_EXT, IntakeEvent, SourceDocument
 
 from .detect import VALID_TYPES_MESSAGE, content_type_mismatch, detect_kind
 from .fetch import FetchError, HostThrottle, fetch_bytes, fetch_to_file
@@ -23,7 +23,7 @@ from .types import NormalizeError
 
 IMAGE_MAX_BYTES = 10 * 1024 * 1024
 SUPPORTED_KINDS = {SourceDocument.Kind.PDF, SourceDocument.Kind.XLSX, SourceDocument.Kind.HTML}
-_EXTENSIONS = {"pdf": "pdf", "xlsx": "xlsx", "html": "html"}
+_EXTENSIONS = {"pdf": "pdf", "xlsx": "xlsx", "html": HTML_SNAPSHOT_EXT}
 
 Status = SourceDocument.Status
 

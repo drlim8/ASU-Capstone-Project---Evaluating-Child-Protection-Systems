@@ -9,9 +9,17 @@ def _ext(filename, default=""):
     return suffix or default
 
 
+# Fetched HTML is stored under a non-rendering name so that serving MEDIA
+# (e.g. with DEBUG=1) returns text/plain instead of live HTML on the portal origin.
+HTML_SNAPSHOT_EXT = "html.txt"
+
+
 def document_upload_path(instance, filename):
     """intake/<batch_id>/<doc_id>/original.<ext> (the document row must be saved first)."""
-    ext = _ext(filename, "bin")
+    if filename.lower().endswith("." + HTML_SNAPSHOT_EXT):
+        ext = HTML_SNAPSHOT_EXT
+    else:
+        ext = _ext(filename, "bin")
     return f"intake/{instance.batch_id}/{instance.pk}/original.{ext}"
 
 

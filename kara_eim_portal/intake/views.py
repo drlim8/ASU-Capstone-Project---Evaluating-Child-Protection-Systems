@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlsplit
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -9,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .forms import DocumentMetaForm, IntakeBatchForm
-from .models import IntakeBatch, SourceDocument
+from .models import HTML_SNAPSHOT_EXT, IntakeBatch, SourceDocument
 from .services import batches as batch_service
 
 Status = SourceDocument.Status
@@ -212,5 +213,14 @@ def document_original(request, pk):
         handle = document.stored_file.open("rb")
     except FileNotFoundError:
         raise Http404("The stored file is missing.")
-    name = document.original_filename or os.path.basename(document.stored_file.name)
-    return FileResponse(handle, as_attachment=True, filename=name)
+    return FileResponse(handle, as_attachment=True, filename=_download_name(document))
+
+
+def _download_name(document: SourceDocument) -> str:
+    if document.original_filename:
+        return document.original_filename
+    stored = os.path.basename(document.stored_file.name)
+    if stored.lower().endswith("." + HTML_SNAPSHOT_EXT):
+        host = urlsplit(document.final_url or document.source_url).hostname or "page"
+        return f"{host}-snapshot.html"
+    return stored

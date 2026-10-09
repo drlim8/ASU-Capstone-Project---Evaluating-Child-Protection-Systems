@@ -180,6 +180,18 @@ class DocumentViewTests(TestCase):
         self.assertEqual(b"".join(resp.streaming_content), b"%PDF-1.4")
         resp.close()
 
+    def test_download_html_snapshot_gets_html_filename(self):
+        doc = self._doc(origin="url", original_filename="", kind="html",
+                        source_url="https://www.a.gov/annual", final_url="https://data.a.gov/annual.html")
+        doc.stored_file.save("original.html.txt", ContentFile(b"<html></html>"), save=True)
+        self.assertTrue(doc.stored_file.name.endswith("original.html.txt"))
+        resp = self.client.get(reverse("intake:document_original", args=[doc.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("attachment", resp["Content-Disposition"])
+        self.assertIn('filename="data.a.gov-snapshot.html"', resp["Content-Disposition"])
+        b"".join(resp.streaming_content)
+        resp.close()
+
     def test_download_original_404_without_file(self):
         doc = self._doc(origin="url", original_filename="")
         self.assertEqual(self.client.get(reverse("intake:document_original", args=[doc.pk])).status_code, 404)

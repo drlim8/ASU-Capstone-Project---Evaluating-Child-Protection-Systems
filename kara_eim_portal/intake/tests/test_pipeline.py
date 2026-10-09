@@ -1,3 +1,4 @@
+import mimetypes
 import os
 import tempfile
 from unittest import mock
@@ -84,7 +85,10 @@ class ProcessDocumentTests(PipelineTestBase):
         self.assertEqual(doc.http_status, 200)
         self.assertIsNotNone(doc.fetched_at)
         self.assertEqual(doc.kind, "html")
-        self.assertTrue(doc.stored_file.name.endswith(".html"))
+        # Stored under a non-rendering name so MEDIA serving never returns live HTML.
+        self.assertTrue(doc.stored_file.name.endswith(".html.txt"), doc.stored_file.name)
+        self.assertFalse(doc.stored_file.name.lower().endswith((".html", ".htm")))
+        self.assertEqual(mimetypes.guess_type(doc.stored_file.name)[0], "text/plain")
         self.assertGreaterEqual(CandidateLink.objects.filter(document=doc).count(), 3)
         self.assertTrue(IntakeEvent.objects.filter(document=doc, action="fetched").exists())
         waited = [c.args[0] for c in throttle.wait.call_args_list]
