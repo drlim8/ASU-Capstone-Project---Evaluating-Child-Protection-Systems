@@ -135,3 +135,19 @@ def where_workbook() -> bytes:
     buf = io.BytesIO()
     wb.save(buf)
     return buf.getvalue()
+
+
+def titled_workbook(sheet_title: str = "Report Links", description: list | None = None) -> bytes:
+    """KARA-style sheet: title row, description row, blank row, then the header on row 4."""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = sheet_title
+    ws.append([sheet_title])
+    ws.append(description or ["One row for every report we track."])
+    ws.append([])
+    ws.append(["Report Asset ID", "Source ID", "Report Asset URL", "File Format"])
+    ws.append(["RA-001", "DS-001", "https://example.org/r1.pdf", "PDF"])
+    ws.append(["RA-002", "DS-001", "https://example.org/r2.xlsx", "XLSX"])
+    buf = io.BytesIO()
+    wb.save(buf)
+    return buf.getvalue()

@@ -1,6 +1,7 @@
 """End-to-end intake flow: upload through the form, run the worker, view results."""
 import shutil
 import tempfile
+from io import StringIO
 from pathlib import Path
 
 from django.conf import settings
@@ -63,7 +64,7 @@ class EndToEndTests(TestCase):
         batch = IntakeBatch.objects.get()
         self.assertRedirects(resp, reverse("intake:batch_detail", args=[batch.pk]))
 
-        call_command("run_intake_worker", "--once")
+        call_command("run_intake_worker", "--once", stdout=StringIO())
 
         pdf = batch.documents.get(kind=SourceDocument.Kind.PDF)
         xlsx = batch.documents.get(kind=SourceDocument.Kind.XLSX)
@@ -72,9 +73,9 @@ class EndToEndTests(TestCase):
         self.assertEqual(xlsx.status, SourceDocument.Status.READY)
         self.assertIn("eim_workbook", [w["code"] for w in xlsx.warnings])
         # "Report Asset URL" is column D of the Source Assets sheet.
-        labels = set(xlsx.candidate_links.values_list("label", flat=True))
-        self.assertIn("Source Assets!D5", labels)
-        self.assertTrue(xlsx.candidate_links.filter(label__startswith="Source Assets!D", url__startswith="http").exists())
+        asset_links = xlsx.candidate_links.filter(label__startswith="Source Assets!D")
+        self.assertTrue(asset_links.filter(url__startswith="http").exists())
+        self.assertEqual(set(asset_links.values_list("context", flat=True)), {"Report Asset URL"})
 
         self.assertEqual(self.client.get(reverse("intake:batch_detail", args=[batch.pk])).status_code, 200)
         for doc in (pdf, xlsx):

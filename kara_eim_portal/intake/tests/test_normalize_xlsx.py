@@ -54,6 +54,36 @@ class NormalizeXlsxTests(unittest.TestCase):
         self.assertEqual(len(result.links), 3)
         self.assertEqual(result.links[0].context, "Where")
 
+    def test_header_found_below_title_and_description_rows(self):
+        result = normalize_xlsx(self._write(factories.titled_workbook()))
+        header = ["Report Asset ID", "Source ID", "Report Asset URL", "File Format"]
+        self.assertEqual(result.pages[0].tables[0].header_guess, header)
+        self.assertEqual([l.label for l in result.links], ["Report Links!C5", "Report Links!C6"])
+        self.assertEqual({l.context for l in result.links}, {"Report Asset URL"})
+
+    def test_core_sheet_uses_schema_header_row(self):
+        # The two-cell description row would win the generic heuristic; the
+        # schema says Source Assets headers live on row 4.
+        data = factories.titled_workbook("Source Assets", description=["Notes", "Owned by research"])
+        result = normalize_xlsx(self._write(data))
+        self.assertEqual(result.pages[0].tables[0].header_guess[2], "Report Asset URL")
+        self.assertEqual({l.context for l in result.links}, {"Report Asset URL"})
+
+    def test_single_column_sheet_falls_back_to_first_non_empty_row(self):
+        import io
+
+        import openpyxl
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.append([None])
+        ws.append(["Title"])
+        ws.append(["Body text"])
+        buf = io.BytesIO()
+        wb.save(buf)
+        result = normalize_xlsx(self._write(buf.getvalue()))
+        self.assertEqual(result.pages[0].tables[0].header_guess, ["Title"])
+
     def test_eim_workbook_warning(self):
         result = normalize_xlsx(self._write(build_test_workbook()))
         self.assertIn("eim_workbook", [w.code for w in result.warnings])

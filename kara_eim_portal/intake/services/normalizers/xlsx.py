@@ -9,7 +9,7 @@ import openpyxl
 from openpyxl.utils.exceptions import InvalidFileException
 from PIL import Image
 
-from imports.services.schema import CORE_SHEETS
+from imports.services.schema import CORE_SHEETS, SUPPORTED_SHEETS
 from intake.services.types import (
     ImageData,
     IntakeWarning,
@@ -24,6 +24,7 @@ DAMAGED_MESSAGE = "This workbook is damaged and could not be read."
 EIM_MESSAGE = "This looks like an EIM workbook. You can also load it through the EIM import."
 URL_HEADER_WORDS = ("url", "link")
 URL_CONTENT_THRESHOLD = 0.5
+HEADER_SCAN_ROWS = 10
 
 
 def _text(value):
@@ -73,11 +74,40 @@ def _extract_images(ws, page_no: int, warnings: list[IntakeWarning]) -> list[Ima
     return images
 
 
-def _url_columns(ws, rows: list[list]) -> tuple[int | None, set[int]]:
-    """Return (header row index in `rows`, set of 0-based URL column indexes)."""
-    header_idx = next((i for i, r in enumerate(rows) if any(c is not None for c in r)), None)
+def _non_blank(row: list) -> int:
+    return sum(c is not None for c in row)
+
+
+def _header_index(sheet_name: str, rows: list[list]) -> int | None:
+    """Index in `rows` of the header row.
+
+    KARA sheets open with a title, a description and a blank row, so the header
+    is not simply the first non-empty row. Known EIM sheets use the schema's
+    header row when that row holds at least one expected column name. Otherwise
+    the header is the first of the first HEADER_SCAN_ROWS rows whose non-blank
+    count is at least max(2, half the widest of those rows); failing that, the
+    first non-empty row.
+    """
+    spec = SUPPORTED_SHEETS.get(sheet_name)
+    if spec and spec.get("header_row"):
+        idx = spec["header_row"] - 1
+        if idx < len(rows) and set(spec.get("required_columns", ())) & {
+            c.strip() for c in rows[idx] if c is not None
+        }:
+            return idx
+    window = rows[:HEADER_SCAN_ROWS]
+    widest = max((_non_blank(r) for r in window), default=0)
+    threshold = max(2, widest / 2)
+    for i, r in enumerate(window):
+        if _non_blank(r) >= threshold:
+            return i
+    return next((i for i, r in enumerate(rows) if _non_blank(r)), None)
+
+
+def _url_columns(rows: list[list], header_idx: int | None) -> set[int]:
+    """Set of 0-based URL column indexes, judged by header word or by content."""
     if header_idx is None:
-        return None, set()
+        return set()
     header = rows[header_idx]
     cols: set[int] = set()
     for c in range(len(header)):
@@ -88,14 +118,14 @@ def _url_columns(ws, rows: list[list]) -> tuple[int | None, set[int]]:
         cells = [r[c] for r in rows[header_idx + 1:] if c < len(r) and r[c] is not None]
         if cells and sum(_is_url(v) for v in cells) / len(cells) >= URL_CONTENT_THRESHOLD:
             cols.add(c)
-    return header_idx, cols
+    return cols
 
 
-def _links(ws, rows: list[list], seen: set[str]) -> list[LinkData]:
-    header_idx, cols = _url_columns(ws, rows)
+def _links(ws, rows: list[list], header_idx: int | None, seen: set[str]) -> list[LinkData]:
     links: list[LinkData] = []
     if header_idx is None:
         return links
+    cols = _url_columns(rows, header_idx)
     for c in sorted(cols):
         context = rows[header_idx][c] or ""
         for r in range(header_idx + 1, len(rows)):
@@ -125,8 +155,9 @@ def normalize_xlsx(path: Path) -> NormalizedResult:
     try:
         for n, ws in enumerate(wb.worksheets, start=1):
             rows = _trim([[_text(c) for c in row] for row in ws.iter_rows(values_only=True)])
-            header = next((r for r in rows if any(c is not None for c in r)), None)
-            tables = [TableData(index=0, rows=rows, header_guess=list(header) if header else None)]
+            header_idx = _header_index(ws.title, rows)
+            header = list(rows[header_idx]) if header_idx is not None else None
+            tables = [TableData(index=0, rows=rows, header_guess=header)]
             text = "\n".join("\t".join(c for c in r if c is not None) for r in rows)
             text = "\n".join(line for line in text.split("\n") if line)
             pages.append(
@@ -139,7 +170,7 @@ def normalize_xlsx(path: Path) -> NormalizedResult:
                     images=_extract_images(ws, n, warnings),
                 )
             )
-            links.extend(_links(ws, rows, seen))
+            links.extend(_links(ws, rows, header_idx, seen))
         if set(CORE_SHEETS) <= set(wb.sheetnames):
             warnings.append(IntakeWarning("eim_workbook", EIM_MESSAGE))
     finally:
