@@ -95,6 +95,30 @@ class ProcessDocumentTests(PipelineTestBase):
         self.assertEqual(waited[0], "https://example.org/annual")
         self.assertIn("https://example.org/img/abs.png", waited)
 
+    @mock.patch("intake.services.pipeline.fetch_to_file")
+    def test_url_fragment_without_html_tag_uses_content_type(self, fetch_mock):
+        body = b"<h1>Annual report</h1><p>" + b"Foster care placements rose. " * 10 + b"</p>"
+        fetch_mock.side_effect = fake_fetch(
+            body, final_url="https://example.org/fragment", content_type="text/html; charset=utf-8"
+        )
+        doc = self.url_doc("https://example.org/fragment")
+        process_document(doc, throttle=self.throttle)
+        doc.refresh_from_db()
+        self.assertEqual(doc.status, SourceDocument.Status.READY, doc.error)
+        self.assertEqual(doc.kind, "html")
+        self.assertTrue(doc.stored_file.name.endswith(".html.txt"), doc.stored_file.name)
+
+    @mock.patch("intake.services.pipeline.fetch_to_file")
+    def test_url_unknown_bytes_with_non_html_content_type_rejected(self, fetch_mock):
+        fetch_mock.side_effect = fake_fetch(
+            b"<h1>Annual report</h1>", final_url="https://example.org/notes", content_type="text/plain"
+        )
+        doc = self.url_doc("https://example.org/notes")
+        process_document(doc, throttle=self.throttle)
+        doc.refresh_from_db()
+        self.assertEqual(doc.status, SourceDocument.Status.REJECTED)
+        self.assertEqual(doc.error, VALID_TYPES_MESSAGE)
+
     def test_png_is_rejected_with_message(self):
         doc = self.upload("report.pdf", factories.png_bytes())
         process_document(doc, throttle=self.throttle)

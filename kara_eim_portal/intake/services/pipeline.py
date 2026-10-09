@@ -49,6 +49,16 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _detect(path: Path, content_type: str, is_web_source: bool) -> str:
+    """detect_kind from the bytes, plus the spec's Content-Type hint (5.3):
+    a fetched page whose bytes look unknown but is served as text/html is HTML."""
+    kind = detect_kind(path)
+    if kind == "unknown" and is_web_source:
+        if (content_type or "").split(";", 1)[0].strip().lower() == "text/html":
+            return SourceDocument.Kind.HTML
+    return kind
+
+
 def _fetch(document: SourceDocument, throttle: HostThrottle) -> None:
     """Download source_url and attach it to stored_file. Partial downloads are always discarded."""
     _set_status(document, Status.FETCHING)
@@ -64,7 +74,7 @@ def _fetch(document: SourceDocument, throttle: HostThrottle) -> None:
                 timeout=settings.INTAKE_FETCH_TIMEOUT,
                 user_agent=settings.INTAKE_USER_AGENT,
             )
-        ext = _EXTENSIONS.get(detect_kind(tmp_path), "bin")
+        ext = _EXTENSIONS.get(_detect(tmp_path, result.content_type, True), "bin")
         with open(tmp_path, "rb") as fh:
             document.stored_file.save(f"original.{ext}", File(fh), save=False)
     finally:
@@ -135,8 +145,8 @@ def process_document(document: SourceDocument, *, throttle: HostThrottle) -> Non
     document.sha256 = _sha256(path)
     if document.size_bytes is None:
         document.size_bytes = path.stat().st_size
-    kind = detect_kind(path)
     is_web_source = bool(document.final_url or document.source_url)
+    kind = _detect(path, document.content_type, is_web_source)
     if kind not in SUPPORTED_KINDS or (kind == SourceDocument.Kind.HTML and not is_web_source):
         document.kind = SourceDocument.Kind.UNKNOWN
         document.error = VALID_TYPES_MESSAGE
