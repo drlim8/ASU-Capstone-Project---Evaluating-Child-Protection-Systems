@@ -1,0 +1,37 @@
+{% extends "imports/base.html" %}
+{% block title %}Intake | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Source intake</p>
+    <h1>Intake batches</h1>
+    <p>Add PDFs, Excel files, and URLs. Each is normalized into pages, tables, and images for review.</p>
+  </div>
+  {% if perms.intake.add_intakebatch %}<a class="button primary" href="{% url 'intake:batch_new' %}">New batch</a>{% endif %}
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Recent batches</h2></div>
+  {% if batches %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Batch</th><th>Status</th><th>Scope</th><th>Documents</th><th>Created by</th><th>Created</th></tr></thead>
+      <tbody>
+      {% for batch in batches %}
+        <tr>
+          <td><a href="{% url 'intake:batch_detail' batch.pk %}">{{ batch.title }}</a></td>
+          <td><span class="status status-{{ batch.status_key }}">{{ batch.status_label }}</span></td>
+          <td>{{ batch.default_scope|default:"Not specified" }}</td>
+          <td>{{ batch.doc_count }}</td>
+          <td>{{ batch.created_by.get_full_name|default:batch.created_by.username }}</td>
+          <td>{{ batch.created_at|date:"M j, Y g:i A" }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="empty-state"><h3>No batches yet</h3><p>Create a batch to start normalizing source documents.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

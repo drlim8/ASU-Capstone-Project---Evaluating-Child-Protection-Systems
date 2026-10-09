@@ -1,0 +1,62 @@
+{% extends "imports/base.html" %}
+{% load static %}
+{% block title %}{{ batch.title }} | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Batch #{{ batch.pk }}</p>
+    <h1>{{ batch.title }}</h1>
+    <p>{{ batch.default_scope|default:"No scope set" }} · Created {{ batch.created_at|date:"M j, Y g:i A" }} by {{ batch.created_by.get_full_name|default:batch.created_by.username }}</p>
+    {% if batch.notes %}<p>{{ batch.notes }}</p>{% endif %}
+  </div>
+  <span class="status large status-{{ batch_status }}" id="batch-status">{{ status_label }}</span>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Documents</h2></div>
+  {% if documents %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Source</th><th>Type</th><th>Status</th><th>Pages</th><th>Tables</th><th>Images</th><th>Warnings</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for doc in documents %}
+        <tr data-doc-id="{{ doc.pk }}">
+          <td><a href="{% url 'intake:document_detail' doc.pk %}">{{ doc.original_filename|default:doc.source_url|default:"Document" }}</a>
+            {% if doc.error %}<small class="error-text">{{ doc.error }}</small>{% endif %}
+          </td>
+          <td>{{ doc.get_kind_display }}</td>
+          <td><span class="status status-{{ doc.status }}" data-field="status">{{ doc.get_status_display }}</span></td>
+          <td data-field="pages">{{ doc.page_count }}</td>
+          <td data-field="tables">{{ doc.table_count }}</td>
+          <td data-field="images">{{ doc.image_count }}</td>
+          <td data-field="warnings">{{ doc.warning_count }}</td>
+          <td>
+            {% if perms.intake.add_intakebatch %}
+              {% if doc.status == "failed" %}
+              <form method="post" action="{% url 'intake:document_retry' doc.pk %}" class="inline-form">
+                {% csrf_token %}<button class="button secondary small" type="submit">Retry</button>
+              </form>
+              {% endif %}
+              {% if doc.status != "ready" %}
+              <form method="post" action="{% url 'intake:document_remove' doc.pk %}" class="inline-form">
+                {% csrf_token %}<button class="button secondary small" type="submit">Remove</button>
+              </form>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="empty-state"><h3>No documents</h3><p>All documents in this batch have been removed.</p></div>
+  {% endif %}
+</section>
+
+<p><a href="{% url 'intake:home' %}">Back to all batches</a></p>
+
+{% if batch_status == "processing" %}
+<script src="{% static 'intake/poll.js' %}" data-status-url="{% url 'intake:batch_status' batch.pk %}"></script>
+{% endif %}
+{% endblock %}

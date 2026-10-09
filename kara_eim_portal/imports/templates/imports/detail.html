@@ -1,0 +1,114 @@
+{% extends "imports/base.html" %}
+{% block title %}{{ dataset_import.title }} | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Import #{{ dataset_import.pk }}</p>
+    <h1>{{ dataset_import.title }}</h1>
+    <p>{{ dataset_import.original_filename }} · Uploaded {{ dataset_import.uploaded_at|date:"M j, Y g:i A" }}</p>
+  </div>
+  <span class="status large status-{{ dataset_import.status }}">{{ dataset_import.get_status_display }}</span>
+</div>
+
+<section class="metric-grid" aria-label="Validation summary">
+  <article class="metric"><span>Total records</span><strong>{{ dataset_import.summary.total_records|default:0 }}</strong></article>
+  <article class="metric good"><span>Valid records</span><strong>{{ dataset_import.summary.valid_records|default:0 }}</strong></article>
+  <article class="metric bad"><span>Errors</span><strong>{{ dataset_import.summary.error_count|default:0 }}</strong></article>
+  <article class="metric warn"><span>Warnings</span><strong>{{ dataset_import.summary.warning_count|default:0 }}</strong></article>
+</section>
+
+<div class="detail-grid">
+  <section class="panel">
+    <div class="panel-heading split">
+      <div><h2>Validation results</h2><p>Errors block publication. Warnings require review.</p></div>
+      <a class="button secondary small" href="{% url 'imports:validation_report' dataset_import.pk %}">Download CSV report</a>
+    </div>
+    {% if dataset_import.validation_errors %}
+      <h3 class="result-title error-text">Errors</h3>
+      <ul class="issue-list">
+        {% for item in dataset_import.validation_errors|slice:":20" %}
+        <li><strong>{{ item.sheet|default:"Workbook" }}{% if item.row %}, row {{ item.row }}{% endif %}</strong><span>{{ item.message }}</span></li>
+        {% endfor %}
+      </ul>
+      {% if dataset_import.validation_errors|length > 20 %}<p>Showing the first 20 errors. Download the report for the full list.</p>{% endif %}
+    {% else %}
+      <div class="result-ok"><strong>No blocking errors</strong><span>This import can proceed to human review.</span></div>
+    {% endif %}
+
+    {% if dataset_import.validation_warnings %}
+      <h3 class="result-title warning-text">Warnings</h3>
+      <ul class="issue-list warning-list">
+        {% for item in dataset_import.validation_warnings|slice:":12" %}
+        <li><strong>{{ item.sheet|default:"Workbook" }}{% if item.row %}, row {{ item.row }}{% endif %}</strong><span>{{ item.message }}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+
+  <aside class="panel metadata">
+    <h2>Import information</h2>
+    <dl>
+      <div><dt>Jurisdiction</dt><dd>{{ dataset_import.jurisdiction|default:"Not specified" }}</dd></div>
+      <div><dt>Reporting year</dt><dd>{{ dataset_import.reporting_year|default:"Not specified" }}</dd></div>
+      <div><dt>Framework</dt><dd>{{ dataset_import.framework_version|default:"Not specified" }}</dd></div>
+      <div><dt>Uploaded by</dt><dd>{{ dataset_import.uploaded_by.get_full_name|default:dataset_import.uploaded_by.username }}</dd></div>
+      <div><dt>File fingerprint</dt><dd><code>{{ dataset_import.file_sha256|slice:":12" }}…</code></dd></div>
+    </dl>
+    <form method="post" action="{% url 'imports:revalidate' dataset_import.pk %}">
+      {% csrf_token %}<button class="button secondary full" type="submit">Run validation again</button>
+    </form>
+  </aside>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Sheet summary</h2><p>Only recognized tabular sheets are staged.</p></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Sheet</th><th>Total rows</th><th>Valid</th><th>Invalid</th></tr></thead>
+      <tbody>
+      {% for sheet, stats in dataset_import.summary.sheet_stats.items %}
+        <tr><td>{{ sheet }}</td><td>{{ stats.total }}</td><td>{{ stats.valid }}</td><td>{{ stats.invalid }}</td></tr>
+      {% empty %}<tr><td colspan="4">No supported sheets were processed.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% if dataset_import.cluster_summary %}
+<section class="panel">
+  <div class="panel-heading"><h2>Data groupings</h2><p>These are existing EIM categories, not machine-learning clusters.</p></div>
+  <div class="cluster-grid">
+  {% for group, values in dataset_import.cluster_summary.items %}
+    <article><h3>{{ group }}</h3><ul>{% for name, count in values.items %}<li><span>{{ name }}</span><strong>{{ count }}</strong></li>{% endfor %}</ul></article>
+  {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="panel">
+  <div class="panel-heading"><h2>Staged-record preview</h2><p>Showing the first 20 processed records. The original workbook remains unchanged.</p></div>
+  <div class="record-list">
+  {% for record in preview_records %}
+    <details>
+      <summary><span>{{ record.sheet_name }} · row {{ record.source_row }}</span><span class="status {% if record.is_valid %}status-ready{% else %}status-needs_correction{% endif %}">{% if record.is_valid %}Valid{% else %}Invalid{% endif %}</span></summary>
+      <dl class="payload">{% for key, value in record.payload.items %}<div><dt>{{ key }}</dt><dd>{{ value|default:"—" }}</dd></div>{% endfor %}</dl>
+    </details>
+  {% empty %}<p>No records were staged.</p>{% endfor %}
+  </div>
+</section>
+
+{% if perms.imports.change_datasetimport and dataset_import.status != "approved" %}
+<section class="panel review-panel">
+  <div class="panel-heading"><h2>Human review</h2><p>Approval publishes all valid staged records as one version.</p></div>
+  <form method="post" class="review-form">
+    {% csrf_token %}
+    {{ review_form.notes.label_tag }}
+    {{ review_form.notes }}
+    <div class="form-actions">
+      <button class="button primary" formaction="{% url 'imports:approve' dataset_import.pk %}" {% if not dataset_import.can_approve %}disabled{% endif %}>Approve and publish</button>
+      <button class="button danger" formaction="{% url 'imports:reject' dataset_import.pk %}">Reject import</button>
+    </div>
+  </form>
+</section>
+{% endif %}
+{% endblock %}

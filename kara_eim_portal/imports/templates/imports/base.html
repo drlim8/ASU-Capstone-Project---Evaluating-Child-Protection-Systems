@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}KARA EIM Data Portal{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'imports/app.css' %}">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="{% url 'imports:dashboard' %}">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span><strong>KARA</strong><small>EIM Data Portal</small></span>
+      </a>
+      {% if user.is_authenticated %}
+      <nav aria-label="Primary navigation">
+        <a href="{% url 'imports:dashboard' %}">Imports</a>
+        <a href="{% url 'imports:upload' %}">Upload</a>
+        <a href="{% url 'imports:published' %}">Published data</a>
+        {% if perms.intake.view_intakebatch %}<a href="{% url 'intake:home' %}">Intake</a>{% endif %}
+        {% if user.is_staff %}<a href="/admin/">Administration</a>{% endif %}
+      </nav>
+      <form method="post" action="{% url 'logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="link-button">Sign out</button>
+      </form>
+      {% endif %}
+    </div>
+  </header>
+
+  <main id="main-content" class="shell page">
+    {% if messages %}
+      <div class="messages" aria-live="polite">
+        {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">Internal data-loading prototype. Human review is required before publication.</div>
+  </footer>
+</body>
+</html>

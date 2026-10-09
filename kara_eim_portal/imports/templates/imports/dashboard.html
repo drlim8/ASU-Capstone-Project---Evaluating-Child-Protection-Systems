@@ -1,0 +1,47 @@
+{% extends "imports/base.html" %}
+{% block title %}Imports | KARA EIM Data Portal{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Data loading</p>
+    <h1>EIM workbook imports</h1>
+    <p>Upload, validate, review, and publish versioned EIM data.</p>
+  </div>
+  <a class="button primary" href="{% url 'imports:upload' %}">Upload workbook</a>
+</div>
+
+<section class="metric-grid" aria-label="Import summary">
+  <article class="metric"><span>Total imports</span><strong>{{ counts.total }}</strong></article>
+  <article class="metric"><span>Ready for review</span><strong>{{ counts.ready }}</strong></article>
+  <article class="metric"><span>Needs correction</span><strong>{{ counts.needs_correction }}</strong></article>
+  <article class="metric"><span>Published versions</span><strong>{{ counts.published }}</strong></article>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>Recent imports</h2>
+    <p>The original workbook and every validation result remain attached to the import version.</p>
+  </div>
+  {% if imports %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Import</th><th>Status</th><th>Jurisdiction</th><th>Uploaded by</th><th>Uploaded</th><th>Records</th></tr></thead>
+      <tbody>
+      {% for item in imports %}
+        <tr>
+          <td><a href="{% url 'imports:detail' item.pk %}">{{ item.title }}</a><small>{{ item.original_filename }}</small></td>
+          <td><span class="status status-{{ item.status }}">{{ item.get_status_display }}</span></td>
+          <td>{{ item.jurisdiction|default:"Not specified" }}</td>
+          <td>{{ item.uploaded_by.get_full_name|default:item.uploaded_by.username }}</td>
+          <td>{{ item.uploaded_at|date:"M j, Y g:i A" }}</td>
+          <td>{{ item.summary.total_records|default:"—" }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="empty-state"><h3>No imports yet</h3><p>Upload the first EIM workbook to begin validation.</p></div>
+  {% endif %}
+</section>
+{% endblock %}
