@@ -114,7 +114,7 @@ def _links(ws, rows: list[list], seen: set[str]) -> list[LinkData]:
 def normalize_xlsx(path: Path) -> NormalizedResult:
     try:
         wb = openpyxl.load_workbook(str(path), data_only=True)
-    except (zipfile.BadZipFile, InvalidFileException, KeyError, OSError, ValueError) as exc:
+    except (zipfile.BadZipFile, InvalidFileException) as exc:
         raise NormalizeError(DAMAGED_MESSAGE) from exc
     except Exception as exc:  # noqa: BLE001 - damaged archives surface many error types
         raise NormalizeError(DAMAGED_MESSAGE) from exc
