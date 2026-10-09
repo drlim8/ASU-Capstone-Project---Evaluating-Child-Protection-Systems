@@ -13,7 +13,7 @@
 <section class="panel">
   <div class="panel-heading"><h2>Details</h2></div>
   <dl>
-    {% if document.original_filename %}<dt>Original file</dt><dd>{{ document.original_filename }}{% if document.stored_file %} · <a href="{% url 'intake:document_original' document.pk %}">Download original</a>{% endif %}</dd>{% endif %}
+    {% if document.original_filename or document.stored_file %}<dt>Original file</dt><dd>{% if document.original_filename %}{{ document.original_filename }}{% else %}Stored copy{% endif %}{% if document.stored_file %} · <a href="{% url 'intake:document_original' document.pk %}">Download original</a>{% endif %}</dd>{% endif %}
     {% if document.source_url %}<dt>Source URL</dt><dd>{{ document.source_url }} · <a href="{{ document.source_url }}" rel="noopener noreferrer" target="_blank">Open</a></dd>{% endif %}
     {% if document.final_url and document.final_url != document.source_url %}<dt>Final URL</dt><dd>{{ document.final_url }} · <a href="{{ document.final_url }}" rel="noopener noreferrer" target="_blank">Open</a></dd>{% endif %}
     {% if document.parent %}<dt>Found in</dt><dd><a href="{% url 'intake:document_detail' document.parent.pk %}">{{ document.parent }}</a></dd>{% endif %}

@@ -166,6 +166,20 @@ class DocumentViewTests(TestCase):
         b"".join(resp.streaming_content)
         resp.close()
 
+    def test_url_document_has_download_original_link(self):
+        doc = self._doc(origin="url", original_filename="", kind="pdf",
+                        source_url="https://a.gov/reports/r.pdf")
+        doc.stored_file.save("original.pdf", ContentFile(b"%PDF-1.4"), save=True)
+        download = reverse("intake:document_original", args=[doc.pk])
+        resp = self.client.get(reverse("intake:document_detail", args=[doc.pk]))
+        self.assertContains(resp, f'href="{download}"')
+        self.assertContains(resp, "Download original")
+        resp = self.client.get(download)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn('filename="original.pdf"', resp["Content-Disposition"])
+        self.assertEqual(b"".join(resp.streaming_content), b"%PDF-1.4")
+        resp.close()
+
     def test_download_original_404_without_file(self):
         doc = self._doc(origin="url", original_filename="")
         self.assertEqual(self.client.get(reverse("intake:document_original", args=[doc.pk])).status_code, 404)
