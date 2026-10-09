@@ -120,3 +120,18 @@ def docx_bytes() -> bytes:
         zf.writestr("[Content_Types].xml", "<Types/>")
         zf.writestr("word/document.xml", "<w:document/>")
     return buf.getvalue()
+
+
+def where_workbook() -> bytes:
+    """Header "Where" (no url/link keyword); 3 of 4 data cells are http(s) URLs."""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    ws.append(["Name", "Where"])
+    ws.append(["a", "https://example.org/a.pdf"])
+    ws.append(["b", "http://example.org/b.xlsx"])
+    ws.append(["c", "https://example.org/c.pdf"])
+    ws.append(["d", "not a url"])
+    buf = io.BytesIO()
+    wb.save(buf)
+    return buf.getvalue()
