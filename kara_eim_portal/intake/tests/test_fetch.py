@@ -88,7 +88,7 @@ class AssertPublicUrlTests(TestCase):
 
     def test_blocks_backslash_authority_confusion(self):
         with patch("intake.services.fetch.socket.getaddrinfo", fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})):
-            for url in ("http://127.0.0.1\@a.gov/", "http://a.gov/ x", "http://a.gov/\x00"):
+            for url in ("http://127.0.0.1\\@a.gov/", "http://a.gov/ x", "http://a.gov/\x00"):
                 with self.assertRaises(BlockedURLError, msg=url):
                     assert_public_url(url)
 
@@ -146,12 +146,12 @@ class FetchTests(TestCase):
     def test_backslash_url_direct_never_requests(self, gai):
         gai.side_effect = fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})
         with self.assertRaises(BlockedURLError):
-            run(self.session, url="http://127.0.0.1\@a.gov/")
+            run(self.session, url="http://127.0.0.1\\@a.gov/")
         self.session.get.assert_not_called()
 
     def test_backslash_url_in_location_blocked(self, gai):
         gai.side_effect = fake_getaddrinfo({"a.gov": "93.184.216.34", "127.0.0.1": "127.0.0.1"})
-        self.session.get.side_effect = [resp(302, {"Location": "http://127.0.0.1\@a.gov/"})]
+        self.session.get.side_effect = [resp(302, {"Location": "http://127.0.0.1\\@a.gov/"})]
         with self.assertRaises(BlockedURLError):
             run(self.session)
         self.assertEqual(self.session.get.call_count, 1)
