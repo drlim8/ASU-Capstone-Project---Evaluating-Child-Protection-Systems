@@ -166,3 +166,20 @@ class BatchViewTests(TestCase):
     def test_anonymous_redirected_to_login(self):
         self.client.logout()
         self.assertEqual(self.client.get(reverse("intake:home")).status_code, 302)
+
+
+class IntakeNavLinkTests(TestCase):
+    def test_nav_link_only_for_users_who_can_view_intake(self):
+        from django.contrib.auth.models import Permission
+
+        intake_href = f'href="{reverse("intake:home")}"'
+        user = User.objects.create_user("plain", password="pw")
+        self.client.force_login(user)
+        resp = self.client.get(reverse("imports:dashboard"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, intake_href)
+
+        user.user_permissions.add(Permission.objects.get(codename="view_intakebatch"))
+        user = User.objects.get(pk=user.pk)  # drop the cached permissions
+        self.client.force_login(user)
+        self.assertContains(self.client.get(reverse("imports:dashboard")), intake_href)

@@ -130,6 +130,7 @@ The passwords in `compose.yml` are only local defaults. Replace them before depl
 - Any authenticated account can upload and inspect imports.
 - Accounts with the Django `change dataset import` permission can approve or reject an import.
 - A superuser automatically has all review permissions.
+- Batch intake (`/intake/`) requires `intake.view_intakebatch` to see batches and documents, and `intake.add_intakebatch` to create batches, edit document metadata, retry or remove items, and queue links. The Intake navigation link appears only for accounts with the view permission.
 - The Django administration site is available at `/admin/`.
 
 ## Validation behavior
