@@ -37,6 +37,7 @@ services:
   worker:
     build: .
     command: python manage.py run_intake_worker
+    restart: unless-stopped
     environment:
       DJANGO_SECRET_KEY: local-docker-key-change-before-deployment
       DJANGO_DEBUG: "1"

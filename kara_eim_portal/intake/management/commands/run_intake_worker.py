@@ -1,12 +1,17 @@
+import logging
 import time
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db import close_old_connections
 
 from intake.services.fetch import HostThrottle
 from intake.services.worker import run_once
 
+logger = logging.getLogger(__name__)
+
 IDLE_SLEEP_SECONDS = 1
+ERROR_SLEEP_SECONDS = 5
 
 
 class Command(BaseCommand):
@@ -22,12 +27,20 @@ class Command(BaseCommand):
         processed = 0
         try:
             while True:
-                if run_once(throttle):
-                    processed += 1
-                    continue
-                if once:
-                    break
-                time.sleep(IDLE_SLEEP_SECONDS)
+                try:
+                    if run_once(throttle):
+                        processed += 1
+                        continue
+                    if once:
+                        break
+                    time.sleep(IDLE_SLEEP_SECONDS)
+                except Exception:  # noqa: BLE001 - a DB outage must not kill the worker
+                    # e.g. tables not migrated yet, "database is locked", Postgres restart.
+                    logger.exception("Intake worker loop failed; retrying.")
+                    close_old_connections()
+                    if once:
+                        break
+                    time.sleep(ERROR_SLEEP_SECONDS)
         except KeyboardInterrupt:
             self.stdout.write("Stopping intake worker.")
         self.stdout.write(f"Processed {processed} job(s).")

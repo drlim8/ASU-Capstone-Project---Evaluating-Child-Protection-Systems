@@ -165,3 +165,41 @@ class WorkerTests(WorkerTestBase):
         b.refresh_from_db()
         self.assertEqual(a.state, ProcessingJob.State.DONE)
         self.assertEqual(b.state, ProcessingJob.State.DONE)
+
+
+class WorkerCommandResilienceTests(TestCase):
+    """The long-running loop must survive database errors instead of dying."""
+
+    @mock.patch("intake.management.commands.run_intake_worker.close_old_connections")
+    @mock.patch("intake.management.commands.run_intake_worker.time.sleep")
+    @mock.patch("intake.management.commands.run_intake_worker.run_once")
+    def test_loop_recovers_from_operational_error(self, run_once_mock, sleep_mock, close_mock):
+        from django.db import OperationalError
+
+        from intake.management.commands import run_intake_worker as cmd
+
+        run_once_mock.side_effect = [OperationalError("no such table: intake_processingjob"), True, False]
+        # First sleep is the error back-off; the second (idle) sleep stops the loop.
+        sleep_mock.side_effect = [None, KeyboardInterrupt]
+        out = StringIO()
+        with self.assertLogs("intake.management.commands.run_intake_worker", level="ERROR") as logs:
+            call_command("run_intake_worker", stdout=out)
+        self.assertEqual(run_once_mock.call_count, 3)
+        self.assertEqual(sleep_mock.call_args_list[0], mock.call(cmd.ERROR_SLEEP_SECONDS))
+        close_mock.assert_called()
+        self.assertIn("no such table", "\n".join(logs.output))
+        self.assertIn("Processed 1 job(s).", out.getvalue())
+
+    @mock.patch("intake.management.commands.run_intake_worker.close_old_connections")
+    @mock.patch("intake.management.commands.run_intake_worker.time.sleep")
+    @mock.patch("intake.management.commands.run_intake_worker.run_once")
+    def test_once_stops_after_error(self, run_once_mock, sleep_mock, close_mock):
+        from django.db import OperationalError
+
+        run_once_mock.side_effect = OperationalError("database is locked")
+        out = StringIO()
+        with self.assertLogs("intake.management.commands.run_intake_worker", level="ERROR"):
+            call_command("run_intake_worker", "--once", stdout=out)
+        run_once_mock.assert_called_once()
+        sleep_mock.assert_not_called()
+        self.assertIn("Processed 0 job(s).", out.getvalue())
