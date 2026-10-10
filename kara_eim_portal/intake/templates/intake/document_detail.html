@@ -84,7 +84,14 @@
   <article class="doc-page" id="page-{{ page.number }}">
     <h3>Page {{ page.number }}{% if page.label %} · {{ page.label }}{% endif %}</h3>
     {% if not page.has_text_layer %}<p class="warning-text">No text layer found on this page.</p>{% endif %}
-    {% if page.preview_image %}<img src="{{ page.preview_image.url }}" alt="Page {{ page.number }} preview" loading="lazy" style="max-width:100%">{% endif %}
+    {% if page.preview_image %}
+    <figure style="margin:0 0 1rem">
+      <a class="page-thumb" href="{{ page.preview_image.url }}" target="_blank" rel="noopener" title="Open full-size preview of page {{ page.number }}">
+        <img src="{{ page.preview_image.url }}" alt="Page {{ page.number }} preview" loading="lazy" style="width:160px;max-width:100%;border:1px solid #d0d7de;border-radius:4px">
+      </a>
+      <figcaption style="font-size:.85rem;color:#57606a">Page preview (click to enlarge)</figcaption>
+    </figure>
+    {% endif %}
     {% if page.text %}
     <details><summary>Page text</summary><pre style="white-space:pre-wrap">{{ page.text }}</pre></details>
     {% endif %}

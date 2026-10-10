@@ -62,6 +62,11 @@ class DocumentViewTests(TestCase):
         self.assertContains(resp, "Foster care total 7763")
         self.assertContains(resp, "<table")
         self.assertContains(resp, f'<img src="{page.preview_image.url}"')
+        # Preview is a labelled thumbnail that opens the full-size page image.
+        self.assertContains(
+            resp, f'<a class="page-thumb" href="{page.preview_image.url}" target="_blank" rel="noopener"'
+        )
+        self.assertContains(resp, "Page preview (click to enlarge)")
         self.assertContains(resp, "Big chart")
         self.assertContains(resp, "Show 1 small/decorative images")
         self.assertContains(resp, "w1")
